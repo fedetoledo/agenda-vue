@@ -1,122 +1,61 @@
 <template>
-  <v-card
-    :ripple="false"
-    class="tarjeta"
-  >
-    <v-layout class="d-flex justify-center align-center main-card">
-      <v-btn @click="toggleCheck" class="checked-task" icon>
-        <v-icon>{{this.$props.checked ? 'mdi-close' : 'mdi-check'}}</v-icon>
-      </v-btn>
-      <div class="clicked-title" @click="show = !show"> 
-        <span :class="{checked: this.$props.checked}">{{title}}</span>
-        <v-icon class="float-right" :color="priorityColor(priority)">mdi-alert-circle</v-icon>
-      </div>
-    </v-layout>
-    <v-expand-transition>
-        <div v-show="show">
-          <v-divider/>
-          <v-card-subtitle>{{date}}
-          </v-card-subtitle>
-          <v-card-text><p>{{desc}} - {{id}}</p></v-card-text>
-          <v-btn @click="deleteTodo" class="float-right" icon>
-            <v-icon>mdi-delete</v-icon>
-          </v-btn>
-        </div>
-    </v-expand-transition>
-      
-  </v-card>
+  <div class="todo-item">
+    <div class="todo-item-left">
+      <input type="checkbox" v-model="completed" @change="doneEdit">
+      <div class="todo-item-label" :class="{completed: completed}">{{title}}</div>
+      <span class="remove-item" @click="removeTodo(todo.id)">&times;</span>
+    </div>
+  </div>
 </template>
 
 <script>
-import axios from 'axios';
 export default {
+  props: {
+    todo: {
+      type: Object,
+      required: true
+    },
+    checkAll: {
+      type: Boolean,
+      required: true
+    }
+  },
 
-  props: ['id','title','desc','date','priority','checked'],
-
-  data: () => ({
-    show: false,
-  }),
-
-  watch: {
-    checked: function(nuevo, old) {
-      console.log('new:'+nuevo + ", viejo: "+ old)
+  data() {
+    return {
+      'id': this.todo.id,
+      'title': this.todo.title,
+      'description': this.todo.description,
+      'completed': this.todo.completed,
+      'priority': this.todo.priority
     }
   },
 
   methods: {
-
-    toggleCheck() {
-      this.$emit('update:checked', !this.$props.checked)
-      // const path = 'http://localhost:8000/api/todos/'+this.$props.id+"/";
-      // axios.patch(path, {checked: !this.$props.checked})
-      // .then(() => {
-      //   this.$emit('todoChanged', this.$props.id)
-      // })
-      // .catch((error) => {
-      //   console.log(error)
-      // })
+    removeTodo(id) {
+      this.$store.dispatch('deleteTodo', id)
     },
-
-    deleteTodo() {
-      const path = 'http://localhost:8000/api/todos/'+this.$props.id+'/';
-      axios.delete(path)
-      .then((response) => {
-        alert(response.data.title + " deleted!")
-      })
-      .catch((error) => {
-        console.log(error)
-      })
-    },
-    
-    priorityColor(p) {
-      var color= undefined;
-      switch(p) {
-        case 2:
-          color = '#F44336';
-          break;
-        case 1:
-          color = '#FFEB3B';
-          break;
-        case 0: 
-          color = '#4CAF50';
-          break;
+    doneEdit() {
+      if(this.title.trim() == '') {
+        this.title = 'No puede estar vacio'
       }
-      return color;
-    },
-  }
+      // this.editing = false
+      this.$store.dispatch('updateTodo', {
+        'id': this.id,
+        'title': this.title,
+        'completed': this.completed,
+      })
+    }
+  },
 
+  watch: {
+    checkAll() {
+      this.completed = this.checkAll ? true: this.todo.completed
+    }
+  },
 }
 </script>
 
 <style>
-
-.tarjeta:hover {
-  background: #ededed !important;
-  transition: .2s;
-}
-
-.tarjeta:focus::before {
-  opacity: 0 !important;
-}
-
-.tarjeta .main-card {
-  height: 2.5em;
-}
-
-.clicked-title {
-  width:87%;
-  cursor: pointer;
-  text-align: center;
-}
-
-.checked-task {
-  width:10%;
-}
-
-.checked {
-  text-decoration: line-through;
-  color: #cbcbcb;
-}
-
-
+  
 </style>
