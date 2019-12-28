@@ -25,5 +25,6 @@ export default {
 <style scoped>
   .back-blue {
     background-color: #0079bf;
+    height: 100%;
   }
 </style>

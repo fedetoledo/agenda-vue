@@ -1,8 +1,13 @@
 <template>
     <div>
         <label>
-            <input type="checkbox" :checked="!anyRemaining" @change="checkAll"> 
-            Check All
+        <input 
+            type="checkbox"
+            @change="checkAll"
+            :checked="!anyRemaining" 
+            label="Check All"
+        />
+        Check All
         </label>
     </div>
 </template>
@@ -23,6 +28,5 @@ export default {
 }
 </script>
 
-<style>
-
+<style scoped>
 </style>

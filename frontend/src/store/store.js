@@ -7,8 +7,15 @@ export const store = new Vuex.Store({
     state: {
         filter: 'all',
         todos: [
-            {'id':1,'title':'Primer Todo','description': 'Desc del todo', 'completed': false, 'priority': 0},
+            {'id':1,'title':'Primer Todo','description': 'Primera descripcion del todo todo del descipcion primera', 'completed': false, 'priority': 0},
             {'id':2,'title':'Segundo Todo','description': 'Desc del todo', 'completed': false, 'priority': 0},
+            {'id':3,'title':'Segundo Todo','description': 'Desc del todo', 'completed': false, 'priority': 0},
+            {'id':4,'title':'Segundo Todo','description': 'Desc del todo', 'completed': false, 'priority': 0},
+            {'id':5,'title':'Segundo Todo','description': 'Desc del todo', 'completed': false, 'priority': 0},
+            {'id':5,'title':'Segundo Todo','description': 'Desc del todo', 'completed': false, 'priority': 0},
+            {'id':6,'title':'Segundo Todo','description': 'Desc del todo', 'completed': false, 'priority': 0},
+            {'id':7,'title':'Segundo Todo','description': 'Desc del todo', 'completed': false, 'priority': 0},
+            {'id':8,'title':'Segundo Todo','description': 'Desc del todo', 'completed': false, 'priority': 0},
         ]
     },
 

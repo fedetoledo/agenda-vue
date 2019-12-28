@@ -1,8 +1,11 @@
 <template>
-    <div>
-        <button :class="{active: filter == 'all'}" @click="changeFilter('all')">All</button>
-        <button :class="{active: filter == 'active'}" @click="changeFilter('active')">Active</button>
-        <button :class="{active: filter == 'completed'}" @click="changeFilter('completed')">Completed</button>
+    <div class="mt-4">
+        <div>
+            <p class=" pa-0 ma-0 filter-text">Filter By</p>
+            <v-btn class="mx-1" text x-small :class="{active: filter == 'all'}" @click="changeFilter('all')">All</v-btn>
+            <v-btn class="mx-1" text x-small :class="{active: filter == 'active'}" @click="changeFilter('active')">Active</v-btn>
+            <v-btn class="mx-1" text x-small :class="{active: filter == 'completed'}" @click="changeFilter('completed')">Completed</v-btn>
+        </div>
     </div>
 </template>
 
@@ -21,6 +24,16 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
+
+   .filter-text {
+       font-size: 12px;
+       text-align: center;
+   }
+
+   .active {
+       background-color: #0079bf;
+       color: white;
+   }
 
 </style>

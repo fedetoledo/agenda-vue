@@ -1,11 +1,22 @@
 <template>
-  <div class="todo-item">
-    <div class="todo-item-left">
-      <input type="checkbox" v-model="completed" @change="doneEdit">
-      <div class="todo-item-label" :class="{completed: completed}">{{title}}</div>
-      <span class="remove-item" @click="removeTodo(todo.id)">&times;</span>
-    </div>
-  </div>
+  <v-card class="my-3">
+      <v-card-title class="todo-title d-flex justify-space-between">
+        <label>
+          <input type="checkbox" v-model="completed" @change="doneEdit">
+        </label>
+        <span @click="showDescription = !showDescription" :class="{completed: completed}">{{title}}</span>
+        <v-btn icon small @click="removeTodo(todo.id)" >
+          <v-icon small>mdi-close</v-icon>
+        </v-btn>
+      </v-card-title>
+      <v-expand-transition>
+        <div v-show="showDescription">
+          <v-card-text class="todo-item-desc">
+            {{description}}
+          </v-card-text>
+        </div>
+      </v-expand-transition>
+  </v-card>
 </template>
 
 <script>
@@ -23,6 +34,7 @@ export default {
 
   data() {
     return {
+      showDescription: false,
       'id': this.todo.id,
       'title': this.todo.title,
       'description': this.todo.description,
@@ -45,7 +57,8 @@ export default {
         'title': this.title,
         'completed': this.completed,
       })
-    }
+    },
+
   },
 
   watch: {
@@ -56,6 +69,12 @@ export default {
 }
 </script>
 
-<style>
-  
+<style scoped>
+
+.todo-title {
+  padding: 5px 10px;
+  font-size: 1em;
+  cursor: pointer;
+}
+
 </style>
