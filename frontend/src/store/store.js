@@ -1,22 +1,14 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
+import db from '../firebase'
 
 Vue.use(Vuex)
 
 export const store = new Vuex.Store({
     state: {
         filter: 'all',
-        todos: [
-            {'id':1,'title':'Primer Todo','description': 'Primera descripcion del todo todo del descipcion primera', 'completed': false, 'priority': 0},
-            {'id':2,'title':'Segundo Todo','description': 'Desc del todo', 'completed': false, 'priority': 0},
-            {'id':3,'title':'Segundo Todo','description': 'Desc del todo', 'completed': false, 'priority': 0},
-            {'id':4,'title':'Segundo Todo','description': 'Desc del todo', 'completed': false, 'priority': 0},
-            {'id':5,'title':'Segundo Todo','description': 'Desc del todo', 'completed': false, 'priority': 0},
-            {'id':5,'title':'Segundo Todo','description': 'Desc del todo', 'completed': false, 'priority': 0},
-            {'id':6,'title':'Segundo Todo','description': 'Desc del todo', 'completed': false, 'priority': 0},
-            {'id':7,'title':'Segundo Todo','description': 'Desc del todo', 'completed': false, 'priority': 0},
-            {'id':8,'title':'Segundo Todo','description': 'Desc del todo', 'completed': false, 'priority': 0},
-        ]
+        loading: true,
+        todos: []
     },
 
     getters: {
@@ -54,38 +46,99 @@ export const store = new Vuex.Store({
 
     actions: {
         deleteTodo: (context, id) => {
-            setTimeout(() => {
+            db.collection('todos').doc(id).delete()
+            .then( () => {
                 context.commit('deleteTodo', id)
-            }, 100)
+            })
+            .catch(error => {
+                console.log(error)
+            })
         },
 
         addTodo: (context,todo) => {
-            setTimeout(() => {
-                context.commit('addTodo', todo)
-            }, 100)
+                console.log(todo.completed)
+
+                db.collection('todos').add({
+                    title: todo.title,
+                    description: todo.description,
+                    completed: false,
+                    created_at: new Date()
+                })
+                .then(docRef => {
+                    context.commit('addTodo', {
+                        id: docRef.id,
+                        title: todo.title,
+                        description: todo.description,
+                        completed: false,
+                    })
+                })
+                .catch(error => {
+                    console.log(error)
+                    console.log(todo.completed)
+                })
         },
 
         checkAll: (context,checked) => {
-            setTimeout(() => {
-                return context.commit('checkAll', checked)
-            }, 100)
+            db.collection('todos').get()
+            .then(querySnapshot => {
+                querySnapshot.forEach(doc => {
+                    doc.ref.update({
+                        completed: checked
+                    })
+                    .then( () => {
+                        return context.commit('checkAll', checked)
+                    })
+                })
+            })
         },
 
         updateTodo: (context, todo) => {
-            setTimeout(() => {
+            db.collection('todos').doc(todo.id).update(todo)
+            .then(() => {
                 context.commit('updateTodo', todo)
-            }, 100)
+            })
+            .catch(error => {
+                console.log(error)
+            })
         },
 
         clearCompleted: context => {
-            setTimeout(() => {
-                context.commit('clearCompleted')
-            }, 100)
+            db.collection('todos').where('completed', '==', true).get()
+            .then(querySnapshot => {
+                querySnapshot.forEach(doc => {
+                    doc.ref.delete()
+                    .then(() => {
+                        context.commit('clearCompleted')
+                    })
+                })
+            })
         },
 
         changeFilter: (context,filter) => {
             setTimeout(() => {
                 context.commit('changeFilter', filter)
+            })
+        },
+
+        retrieveTodos: context => {
+            context.state.loading = true
+            db.collection('todos').get()
+            .then(querySnapshot => {
+                let tempTodos = []
+                querySnapshot.forEach(doc => {
+                    // console.log(doc.data())
+                    const data = {
+                        id: doc.id,
+                        title: doc.data().title,
+                        description: doc.data().description,
+                        completed: doc.data().completed,
+                        created_at: doc.data().created_at,
+                        priority: doc.data().priority
+                    }
+                    tempTodos.push(data)
+                })
+                context.state.loading = false
+                context.commit('retrieveTodos', tempTodos)
             })
         }
     },
@@ -101,7 +154,7 @@ export const store = new Vuex.Store({
                 id: todo.id,
                 title: todo.title,
                 description: todo.description,
-                completed: false,
+                completed: todo.completed,
             })
         },
 
@@ -125,6 +178,10 @@ export const store = new Vuex.Store({
 
         changeFilter: (state,filter) => {
             state.filter = filter
+        },
+
+        retrieveTodos: (state, todos) => {
+            state.todos = todos
         }
     }
 })

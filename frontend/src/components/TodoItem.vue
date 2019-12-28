@@ -5,7 +5,7 @@
           <input type="checkbox" v-model="completed" @change="doneEdit">
         </label>
         <span @click="showDescription = !showDescription" :class="{completed: completed}">{{title}}</span>
-        <v-btn icon small @click="removeTodo(todo.id)" >
+        <v-btn icon small @click="deleteTodo(todo.id)" >
           <v-icon small>mdi-close</v-icon>
         </v-btn>
       </v-card-title>
@@ -44,7 +44,7 @@ export default {
   },
 
   methods: {
-    removeTodo(id) {
+    deleteTodo(id) {
       this.$store.dispatch('deleteTodo', id)
     },
     doneEdit() {

@@ -16,6 +16,8 @@
             <div class="d-flex justify-center align-center">
                 <TodoClearCompleted/>
             </div>
+            <!-- CSS LOADING -->
+            <div v-if="$store.state.loading" class="lds-facebook"><div></div><div></div><div></div></div>
             <TodoItem
                 v-for="todo in todosFiltered"
                 :key="todo.id"
@@ -41,6 +43,10 @@ export default {
         TodoItemsRemaining,
         TodoClearCompleted,
         TodoFiltered,
+    },
+
+    created() {
+        this.$store.dispatch('retrieveTodos')
     },
 
     data() {
@@ -128,4 +134,42 @@ export default {
     color: #ccc;
 }
 
+/* CSS LOADING */
+.lds-facebook {
+  display: block;
+  position: relative;
+  width: 80px;
+  height: 80px;
+  margin: auto;
+}
+.lds-facebook div {
+  display: inline-block;
+  position: absolute;
+  left: 8px;
+  width: 16px;
+  background: #0079bf;
+  animation: lds-facebook 1.2s cubic-bezier(0, 0.5, 0.5, 1) infinite;
+}
+.lds-facebook div:nth-child(1) {
+  left: 8px;
+  animation-delay: -0.24s;
+}
+.lds-facebook div:nth-child(2) {
+  left: 32px;
+  animation-delay: -0.12s;
+}
+.lds-facebook div:nth-child(3) {
+  left: 56px;
+  animation-delay: 0;
+}
+@keyframes lds-facebook {
+  0% {
+    top: 8px;
+    height: 64px;
+  }
+  50%, 100% {
+    top: 24px;
+    height: 32px;
+  }
+}
 </style>
