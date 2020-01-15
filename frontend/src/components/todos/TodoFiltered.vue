@@ -13,7 +13,8 @@
 export default {
     computed: {
         filter() {
-            return this.$store.state.filter
+            //$store.estado.nombreDeModulo.propiedad
+            return this.$store.state.todos.filter
         }
     },
     methods: {

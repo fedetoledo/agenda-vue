@@ -11,13 +11,13 @@
                 <TodoCheckAll/>
                 <TodoItemsRemaining/>
             </div>
-        </div>
-        <div class="todo-list elevation-10">
-            <div class="d-flex justify-center align-center">
+            <div class="d-flex justify-center align-center mx-4">
                 <TodoClearCompleted/>
             </div>
+        </div>
+        <div class="todo-list elevation-10">
             <!-- CSS LOADING -->
-            <div v-if="$store.state.loading" class="lds-facebook"><div></div><div></div><div></div></div>
+            <div v-if="$store.state.todos.loading" class="lds-facebook"><div></div><div></div><div></div></div>
             <TodoItem
                 v-for="todo in todosFiltered"
                 :key="todo.id"
