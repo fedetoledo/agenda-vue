@@ -45,6 +45,7 @@ export default {
     flex-wrap: no-wrap;
     align-items: flex-end;
     overflow-x: scroll;
+    margin: 0 5px;
 }
 
 .ghost {

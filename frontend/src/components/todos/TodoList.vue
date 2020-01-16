@@ -1,7 +1,7 @@
 <template>
     <div class="wrapper">
         <div class="section-styled">
-            <h3>Mis tareas</h3>
+            <h3>Tareas</h3>
             <div class="add-todo-form">
                 <v-text-field class="input-text" hide-details="auto" autofocus="" solo dense label="Titulo" v-model="newTodo.title"/>
                 <v-text-field class="input-text" hide-details="auto" solo dense label="Descripcion" v-model="newTodo.description" @keyup.enter="addTodo"/>

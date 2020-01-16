@@ -1,11 +1,8 @@
 <template>
   <v-card class="my-3">
       <v-card-title>
-         Parcial (Falta poder mostrar el nombre)
+         Parcial de nombre - fecha
       </v-card-title>
-      <v-card-text>
-          Nota: {{nota}}
-      </v-card-text>
   </v-card>
 </template>
 
