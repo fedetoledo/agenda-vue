@@ -1,5 +1,5 @@
 <template>
-  <v-card class="my-3">
+  <v-card class="todo">
       <v-card-title class="todo-title d-flex justify-space-between">
         <label>
           <input type="checkbox" v-model="completed" @change="doneEdit">
@@ -71,10 +71,20 @@ export default {
 
 <style scoped>
 
+.todo {
+  margin: 5px 0;
+}
+
 .todo-title {
+  user-select: none;
   padding: 5px 10px;
   font-size: 1em;
   cursor: pointer;
+}
+
+.completed {
+  text-decoration: line-through;
+  color: #aaa;
 }
 
 </style>

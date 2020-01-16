@@ -1,5 +1,6 @@
 <template>
-  <v-btn small outlined block class="mt-3"
+  <v-btn small outlined block
+    class="clear-button"
     v-if="showClearCompletedButton" 
     @click="clearCompleted">
   Clear Completed
@@ -22,9 +23,4 @@ export default {
 </script>
 
 <style scoped>
-    .clear-btn {
-        font-size: 0.8em;
-        border-radius: 2px;
-        background: #ddd;
-    }
 </style>

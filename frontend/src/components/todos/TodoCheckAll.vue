@@ -1,15 +1,8 @@
 <template>
-    <div>
         <label>
-        <input 
-            type="checkbox"
-            @change="checkAll"
-            :checked="!anyRemaining" 
-            label="Check All"
-        />
-        Check All
+            <input type="checkbox" @change="checkAll" :checked="!anyRemaining" label="Check All"/>
+            Check All
         </label>
-    </div>
 </template>
 
 <script>

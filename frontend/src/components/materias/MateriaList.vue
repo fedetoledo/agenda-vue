@@ -1,33 +1,27 @@
 <template>
   <div class="wrapper">
-      <div class="wrapper-style elevation-10">
+      <div class="section-styled">
         <h3>Materias</h3>
-        <draggable
-            ghost-class="ghost"
-            :move="checkMove"
-            @start="dragging = true"
-            @end="dragging = false"
-        >
-        <MateriaItem
-            class="materia-item"
-            v-for="materia in getMaterias"
-            :key="materia.id"
-            :materia="materia"
-        />
-        </draggable>
+        <div class="materias-list">
+            <MateriaItem
+                v-for="materia in getMaterias"
+                :key="materia.id"
+                :materia="materia"
+            />
+        </div>
       </div>
   </div>
 </template>
 
 <script>
 import MateriaItem from './MateriaItem'
-import draggable from 'vuedraggable'
+// import draggable from 'vuedraggable'
 
 export default {
 
     components: {
         MateriaItem,
-        draggable
+        // draggable
     },
 
     created() {
@@ -45,13 +39,16 @@ export default {
 
 <style scoped>
 
+.materias-list {
+    display: flex;
+    flex-wrap: wrap;
+}
+
 .ghost {
   opacity: 0.5;
   background: #c8ebfb;
 }
 
-.materia-item:hover {
-    cursor: move;
-}
+
 
 </style>

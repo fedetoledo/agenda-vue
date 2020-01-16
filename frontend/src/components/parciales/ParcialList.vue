@@ -1,6 +1,6 @@
 <template>
   <div class="wrapper">
-      <div class="wrapper-style elevation-10">
+      <div class="section-styled">
         <h3>Parciales</h3>
         <ParcialItem
             v-for="parcial in getParciales"
@@ -33,6 +33,6 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 
 </style>

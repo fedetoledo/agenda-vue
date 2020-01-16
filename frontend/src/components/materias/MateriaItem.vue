@@ -1,5 +1,5 @@
 <template>
-  <v-card class="my-3">
+  <v-card class=" materia-item">
       <v-card-title>
           {{nombre}}
       </v-card-title>
@@ -10,7 +10,6 @@
                   <p class="horarios-title">Horarios</p>
                   <p v-for="horario in materia.horarios" :key="materia.horarios.indexOf(horario)">{{horario}}</p>  
               </v-col>
-              <v-col></v-col>
           </v-row>
       </v-card-text>
   </v-card>
@@ -36,6 +35,16 @@ export default {
 
 <style scoped>
 
+    .materia-item {
+        max-height: 10em;
+        min-width: 10em;
+        margin-right: 10px;
+    }
+
+    .materia-item:hover {
+    cursor: move;
+    }
+
     .horarios {
         text-align: left;
     }
@@ -47,5 +56,7 @@ export default {
     .card-text {
         padding: 0 0 0 10px;
     }
+
+    p {margin: 0 !important;}
    
 </style>

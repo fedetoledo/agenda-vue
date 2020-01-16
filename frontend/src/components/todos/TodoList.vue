@@ -1,29 +1,29 @@
 <template>
     <div class="wrapper">
-        <div class="wrapper-style elevation-10">
+        <div class="section-styled">
             <h3>Mis tareas</h3>
-            <div>
-                <v-text-field solo dense label="Titulo" v-model="newTodo.title"/>
-                <v-text-field solo dense label="Descripcion" v-model="newTodo.description" @keyup.enter="addTodo"/>
+            <div class="add-todo-form">
+                <v-text-field class="input-text" hide-details="auto" autofocus="" solo dense label="Titulo" v-model="newTodo.title"/>
+                <v-text-field class="input-text" hide-details="auto" solo dense label="Descripcion" v-model="newTodo.description" @keyup.enter="addTodo"/>
             </div>
             <TodoFiltered/>
-            <div class="remaining d-flex justify-space-around align-center py-1 px-3">
+            <div class="todos-info">    
                 <TodoCheckAll/>
                 <TodoItemsRemaining/>
             </div>
-            <div class="d-flex justify-center align-center mx-4">
+            <div class="clear-button">
                 <TodoClearCompleted/>
             </div>
         </div>
-        <div class="wrapper-style elevation-10">
-                <!-- CSS LOADING -->
-                <div v-if="$store.state.todos.loading" class="lds-facebook"><div></div><div></div><div></div></div>
-                <TodoItem
-                    v-for="todo in todosFiltered"
-                    :key="todo.id"
-                    :todo="todo"
-                    :checkAll="!anyRemaining"
-                />
+        <div class="section-styled">
+            <!-- CSS LOADING -->
+            <div v-if="$store.state.todos.loading" class="lds-facebook"><div></div><div></div><div></div></div>
+            <TodoItem
+                v-for="todo in todosFiltered"
+                :key="todo.id"
+                :todo="todo"
+                :checkAll="!anyRemaining"
+            />
         </div>
     </div>
 </template>
@@ -93,29 +93,19 @@ export default {
 
 <style scoped>
 
-
-/* .todo-add-form {
-    width: 90%;
-    margin: 0 auto;
-    height: 6em;
-} */
-
-/* .todo-list {
-    height: 23em;
-    background-color: #f0f2f4;
-    border-radius: 4px;
-    border-collapse: separate;
-    scrollbar-width: none;
-    overflow: scroll;
-} */
-
-.remaining {
-    font-size: 14px;
+.add-todo-form .input-text {
+    margin-bottom: 15px;
 }
 
-.completed {
-    text-decoration: line-through;
-    color: #ccc;
+.todos-info {
+    display: flex;
+    justify-content: space-around;
+    margin: 10px 0;
+}
+
+.clear-button {
+    width: 90%;
+    margin: 5px auto;
 }
 
 /* CSS LOADING */

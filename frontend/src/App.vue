@@ -1,15 +1,24 @@
 <template>
   <v-app>
-  <v-container fluid class="back-blue">
-    <v-row>
-      <v-col>
+  <v-container fluid class="container">
+    <v-row> <!-- main row -->
+      <v-col cols="4">
         <TodoList/>
       </v-col>
-      <v-col>
-        <MateriaList/>
-      </v-col>
-      <v-col>
-        <ParcialList/>
+      <v-col cols="8">
+        <v-row no-gutters>
+          <v-col>
+            <MateriaList/>
+          </v-col>
+        </v-row>
+        <v-row no-gutters>
+          <v-col class="mr-2">
+            <ParcialList/>
+          </v-col>
+          <v-col class="ml-2">
+            Notas
+          </v-col>
+        </v-row>
       </v-col>
     </v-row>
   </v-container>
@@ -37,8 +46,9 @@ export default {
 </script>
 
 <style scoped>
-  .back-blue {
+  .container {
+    padding: 5px 20px;
+    min-height: 100%;
     background-color: #0079bf;
-    height: 100%;
   }
 </style>
