@@ -1,7 +1,9 @@
 <template>
   <v-card class=" materia-item">
       <v-card-title>
-          {{nombre}}
+          <span class="nombre">
+              {{nombre}}
+          </span>
       </v-card-title>
       <hr>
       <v-card-text class="card-text">
@@ -36,13 +38,17 @@ export default {
 <style scoped>
 
     .materia-item {
-        max-height: 10em;
-        min-width: 10em;
+        min-height: 10em;
+        min-width: 12em;
         margin-right: 10px;
     }
 
     .materia-item:hover {
     cursor: move;
+    }
+
+    .nombre {
+        font-size: 0.8em;
     }
 
     .horarios {

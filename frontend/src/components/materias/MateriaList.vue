@@ -40,8 +40,11 @@ export default {
 <style scoped>
 
 .materias-list {
+    min-height: 12em;
     display: flex;
-    flex-wrap: wrap;
+    flex-wrap: no-wrap;
+    align-items: flex-end;
+    overflow-x: scroll;
 }
 
 .ghost {
