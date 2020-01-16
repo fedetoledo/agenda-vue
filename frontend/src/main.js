@@ -4,6 +4,8 @@ import vuetify from './plugins/vuetify';
 // import {store} from './store/deprecated-store';
 import store from './store'
 
+import './assets/css/global.css'
+
 Vue.config.productionTip = false
 
 new Vue({

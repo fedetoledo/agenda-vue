@@ -137,6 +137,10 @@ const actions = {
             context.state.loading = false
             context.commit('retrieveTodos', tempTodos)
         })
+        .catch(error => {
+            context.state.loading = false
+            console.log(error)
+        })
     }
 }
 

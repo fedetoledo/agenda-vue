@@ -1,42 +1,57 @@
 <template>
   <div class="wrapper">
-      <h3>Materias</h3>
-      <ol>
-          <li v-for="m in materias" :key=m.id>
-              {{m.nombre}}
-              {{m.color}} 
-          </li>
-      </ol>
-      hola mundo
+      <div class="wrapper-style elevation-10">
+        <h3>Materias</h3>
+        <draggable
+            ghost-class="ghost"
+            :move="checkMove"
+            @start="dragging = true"
+            @end="dragging = false"
+        >
+        <MateriaItem
+            class="materia-item"
+            v-for="materia in getMaterias"
+            :key="materia.id"
+            :materia="materia"
+        />
+        </draggable>
+      </div>
   </div>
 </template>
 
 <script>
-import axios from 'axios';
+import MateriaItem from './MateriaItem'
+import draggable from 'vuedraggable'
+
 export default {
 
-    data: () => ({
-        materias: [],
-    }),
-
-    methods: {
-        getMaterias() {
-            const path = 'http://localhost:8000/api/materias/';
-            axios.get(path).then(response => {
-                this.materias = response.data
-            })
-            .catch(error => {
-                console.log(error)
-            })
-        }
+    components: {
+        MateriaItem,
+        draggable
     },
 
     created() {
-        this.getMaterias()
+        this.$store.dispatch('retrieveMaterias')
+    },
+
+    computed: {
+        getMaterias() {
+            return this.$store.getters.getMaterias
+        }
     }
+
 }
 </script>
 
-<style>
+<style scoped>
+
+.ghost {
+  opacity: 0.5;
+  background: #c8ebfb;
+}
+
+.materia-item:hover {
+    cursor: move;
+}
 
 </style>
