@@ -71,7 +71,6 @@ const actions = {
             })
             .catch(error => {
                 console.log(error)
-                console.log(todo.completed)
             })
     },
 

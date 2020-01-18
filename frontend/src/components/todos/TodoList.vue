@@ -1,6 +1,6 @@
 <template>
     <div class="wrapper">
-        <div class="section-styled">
+        <div class="section-styled upper-section">
             <h3>Tareas</h3>
             <div class="add-todo-form">
                 <v-text-field class="input-text" hide-details="auto" autofocus="" solo dense label="Titulo" v-model="newTodo.title"/>

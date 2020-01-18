@@ -7,10 +7,15 @@
     text-align: center;
     border-radius: 4px;
     margin-bottom: 10px;
-    padding: 5px;
+    padding: 5px 8px;
     overflow: hidden;
 }
 
-.section-styled > h3{
+.section-styled  h3{
+    margin-top: 10px;
     margin-bottom: 10px;
+}
+
+.upper-section {
+    min-height: 17em;
 }
