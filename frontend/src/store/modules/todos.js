@@ -1,6 +1,8 @@
-import db from '../../firebase'
+import axios from 'axios'
 
 //Todos Store
+
+const url = 'http://localhost:8000/api/todos/'
 
 //Initial State
 const state = {
@@ -10,6 +12,11 @@ const state = {
 }
 
 const getters = {
+
+    getTodos: state => {
+        return state.todos
+    },
+
     completedTodos: state => {
         return state.todos.filter(todo => todo.completed)
     },
@@ -28,108 +35,33 @@ const getters = {
         }
         return state.todos
     },
-
+    
     remaining: state => {
         return state.todos.filter(todo => !todo.completed).length
     },
-
+    
     anyRemaining: (state, getters) => {
         return getters.remaining != 0
     },
-
-    showClearCompletedButton: state => {
-        return state.todos.filter(todo => todo.completed).length > 0
-    }
+    
 }
 
 const actions = {
-    deleteTodo: (context, id) => {
-        db.collection('todos').doc(id).delete()
-        .then( () => {
-            context.commit('deleteTodo', id)
-        })
-        .catch(error => {
-            console.log(error)
-        })
-    },
-
-    addTodo: (context,todo) => {
-
-            db.collection('todos').add({
-                title: todo.title,
-                description: todo.description,
-                completed: false,
-                created_at: new Date()
-            })
-            .then(docRef => {
-                context.commit('addTodo', {
-                    id: docRef.id,
-                    title: todo.title,
-                    description: todo.description,
-                    completed: false,
-                })
-            })
-            .catch(error => {
-                console.log(error)
-            })
-    },
-
-    checkAll: (context,checked) => {
-        db.collection('todos').get()
-        .then(querySnapshot => {
-            querySnapshot.forEach(doc => {
-                doc.ref.update({
-                    completed: checked
-                })
-                .then( () => {
-                    return context.commit('checkAll', checked)
-                })
-            })
-        })
-    },
-
-    updateTodo: (context, todo) => {
-        db.collection('todos').doc(todo.id).update(todo)
-        .then(() => {
-            context.commit('updateTodo', todo)
-        })
-        .catch(error => {
-            console.log(error)
-        })
-    },
-
-    clearCompleted: context => {
-        db.collection('todos').where('completed', '==', true).get()
-        .then(querySnapshot => {
-            querySnapshot.forEach(doc => {
-                doc.ref.delete()
-                .then(() => {
-                    context.commit('clearCompleted')
-                })
-            })
-        })
-    },
-
-    changeFilter: (context,filter) => {
-        setTimeout(() => {
-            context.commit('changeFilter', filter)
-        })
-    },
-
+    
     retrieveTodos: context => {
         context.state.loading = true
-        db.collection('todos').get()
-        .then(querySnapshot => {
+        axios.get(url)
+        .then(response => {
             let tempTodos = []
-            querySnapshot.forEach(doc => {
-                // console.log(doc.data())
+            response.data.forEach(todo => {
                 const data = {
-                    id: doc.id,
-                    title: doc.data().title,
-                    description: doc.data().description,
-                    completed: doc.data().completed,
-                    created_at: doc.data().created_at,
-                    priority: doc.data().priority
+                    id: todo.id,
+                    title: todo.title,
+                    description: todo.description,
+                    completed: todo.completed,
+                    created_at: todo.created_at,
+                    priority: todo.priority,
+                    subject: todo.subject
                 }
                 tempTodos.push(data)
             })
@@ -140,7 +72,72 @@ const actions = {
             context.state.loading = false
             console.log(error)
         })
-    }
+    },
+
+    deleteTodo: (context, id) => {
+        axios.delete(url+id)
+        .then( () => {
+            context.commit('deleteTodo', id)
+        })
+        .catch(error => {
+            console.log(error)
+        })
+    },
+
+    addTodo: (context,todo) => {
+            axios.post(url,{
+                title: todo.title,
+                description: todo.description,
+                priority: todo.priority,
+                completed: false,
+                // Axios expects an ID, not the entire object
+                subject: todo.subject.id,
+            })
+            .then(response => {
+                context.commit('addTodo', {
+                    id: response.data.id,
+                    title: todo.title,
+                    description: todo.description,
+                    priority: todo.priority,
+                    completed: false,
+                    //Here I can send the entire object and then use it in component
+                    subject: todo.subject
+                })
+            })
+            .catch(error => {
+                console.log(error)
+            })
+    },
+
+    updateTodo: (context, todo) => {
+        axios.patch(url+todo.id+'/', {
+            title: todo.title,
+            description: todo.description,
+            // priority: todo.priority,
+            completed: todo.completed,
+            // subject: todo.subject.id
+        })
+        .then(() => {
+            context.commit('updateTodo', todo)
+        })
+        .catch(error => {
+            console.log(error)
+        })
+    },
+
+    clearCompleted: (context, getters) => {
+        getters.getTodos.forEach(todo => {
+            axios.delete(url+todo.id)
+        })
+        .then(() => {
+            context.commit('clearCompleted')
+        })
+    },
+
+    changeFilter: (context,filter) => {
+            context.commit('changeFilter', filter)
+    },
+
 }
 
 const mutations = {
@@ -154,14 +151,12 @@ const mutations = {
             id: todo.id,
             title: todo.title,
             description: todo.description,
+            priority: todo.priority,
             completed: todo.completed,
+            subject: todo.subject
         })
     },
 
-    checkAll: (state, checked) => {
-        state.todos.forEach(todo => (todo.completed = checked))
-    },
-    
     updateTodo: (state, todo) => {
         const index = state.todos.findIndex(item => item.id == todo.id)
         state.todos.splice(index, 1, {

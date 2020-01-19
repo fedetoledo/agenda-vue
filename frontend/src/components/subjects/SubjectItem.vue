@@ -1,8 +1,8 @@
 <template>
-  <v-card class=" materia-item">
-      <v-card-title class="materia-header">
-          <span class="nombre">
-              {{nombre}}
+  <v-card class=" subject-item">
+      <v-card-title class="subject-header">
+          <span class="name">
+              {{name}}
           </span>
             <v-spacer></v-spacer>
            <v-menu bottom left>
@@ -16,7 +16,7 @@
               <v-list-item @click.stop="showEditModal=true">
                   <v-list-item-title>Edit</v-list-item-title>
               </v-list-item>
-              <v-list-item @click="deleteMateria(materia.id)">
+              <v-list-item @click="deleteSubject(subject.id)">
                   <v-list-item-title>Delete</v-list-item-title>
               </v-list-item>
             </v-list>
@@ -25,9 +25,10 @@
       <hr>
       <v-card-text class="card-text">
           <v-row>
-              <v-col class="horarios">
-                  <p class="horarios-title">Horarios</p>
-                  <p v-for="horario in materia.horarios" :key="materia.horarios.indexOf(horario)">{{horario}}</p>  
+              <v-col class="schedule">
+                  <p class="schedule-title">Horario</p>
+                  <p>{{schedule1}}</p>
+                  <p>{{schedule2}}</p>
               </v-col>
           </v-row>
       </v-card-text>
@@ -35,22 +36,19 @@
             <v-dialog v-model="showEditModal" persistent max-width="600px">
                 <v-card>
                     <v-card-title>
-                        <span class="headline">Edit Materia</span>
+                        <span class="headline">Edit subject</span>
                     </v-card-title>
                     <v-card-text>
                         <v-container>
                             <v-row>
                             <v-col cols="12">
-                                <v-text-field v-model="nombre" label="Nombre*" required></v-text-field>
+                                <v-text-field v-model="name" label="name*" required></v-text-field>
                             </v-col>
-                            <v-col cols="12">
-                                <v-text-field v-model="horarios[0]"  placeholder="Lun-20:00 a 22:00" label="Horario 1" required></v-text-field>
+                             <v-col cols="12">
+                                <v-text-field v-model="schedule1"  placeholder="Lun-20:00 a 22:00" label="Horario 1"></v-text-field>
                             </v-col>
-                            <v-col cols="12">
-                                <v-text-field v-model="horarios[1]"  placeholder="Mar-20:00 a 22:00" label="Horario 2" required></v-text-field>
-                            </v-col>
-                            <v-col cols="12">
-                                <v-text-field v-model="horarios[2]"  placeholder="Mie-20:00 a 22:00" label="Horario 3" required></v-text-field>
+                             <v-col cols="12">
+                                <v-text-field v-model="schedule2"  placeholder="Mar-20:00 a 22:00" label="Horario 2"></v-text-field>
                             </v-col>
                             </v-row>
                         </v-container>
@@ -59,7 +57,7 @@
                     <v-card-actions>
                         <v-spacer></v-spacer>
                         <v-btn color="blue darken-1" text @click="showEditModal = false">Close</v-btn>
-                        <v-btn color="blue darken-1" text @click="showEditModal = false; updateMateria()">Save</v-btn>
+                        <v-btn color="blue darken-1" text @click="showEditModal = false; updateSubject()">Save</v-btn>
                     </v-card-actions>
                 </v-card>
             </v-dialog>
@@ -71,7 +69,7 @@
 export default {
 
     props: {
-        materia: {
+        subject: {
             type: Object,
             required: true
         }
@@ -79,25 +77,27 @@ export default {
 
     data() {
         return {
-            id: this.materia.id,
-            nombre: this.materia.nombre,
-            horarios: this.materia.horarios,
+            id: this.subject.id,
+            name: this.subject.name,
+            schedule1: this.subject.schedule1,
+            schedule2: this.subject.schedule2,
             showMenu: false,
             showEditModal: false,
         }
     },
 
-    methods: {
+methods: {
 
-        deleteMateria(id) {
-            this.$store.dispatch('deleteMateria', id)
+        deleteSubject(id) {
+            this.$store.dispatch('deleteSubject', id)
         },
 
-        updateMateria() {
-            this.$store.dispatch('updateMateria', {
+        updateSubject() {
+            this.$store.dispatch('updateSubject', {
                 id: this.id,
-                nombre: this.nombre,
-                horarios: this.horarios,
+                name: this.name,
+                schedule1: this.schedule1,
+                schedule2: this.schedule2,
             })
         }        
     }
@@ -106,31 +106,31 @@ export default {
 
 <style scoped>
 
-    .materia-item {
+    .subject-item {
         min-height: 10em;
         min-width: 13em;
         margin-right: 10px;
     }
 
-    .materia-header {
+    .subject-header {
         display: flex;
         justify-content: space-between;
     }
 
-    .materia-menu {
+    .subject-menu {
         display: flex;
         flex-direction: column;
     }
 
-    .nombre {
+    .name {
         font-size: 0.8em;
     }
 
-    .horarios {
+    .schedule {
         text-align: left;
     }
 
-    .horarios-title {
+    .schedule-title {
         text-decoration: underline;
     }
 

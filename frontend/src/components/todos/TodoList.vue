@@ -5,15 +5,9 @@
             <div class="add-todo-form">
                 <v-text-field class="input-text" hide-details="auto" autofocus="" solo dense label="Titulo" v-model="newTodo.title"/>
                 <v-text-field class="input-text" hide-details="auto" solo dense label="Descripcion" v-model="newTodo.description" @keyup.enter="addTodo"/>
+                <v-select return-object v-model="newTodo.subject" item-text="name" :items="getSubjects"  placeholder="Materia"></v-select>
             </div>
             <TodoFiltered/>
-            <div class="todos-info">    
-                <TodoCheckAll/>
-                <TodoItemsRemaining/>
-            </div>
-            <div class="clear-button">
-                <TodoClearCompleted/>
-            </div>
         </div>
         <div class="section-styled">
             <!-- CSS LOADING -->
@@ -30,18 +24,12 @@
 
 <script>
 import TodoItem from './TodoItem';
-import TodoCheckAll from './TodoCheckAll';
-import TodoItemsRemaining from './TodoItemsRemaining';
-import TodoClearCompleted from './TodoClearCompleted';
 import TodoFiltered from './TodoFiltered';
 
 export default {
 
     components: {
         TodoItem,
-        TodoCheckAll,
-        TodoItemsRemaining,
-        TodoClearCompleted,
         TodoFiltered,
     },
 
@@ -52,9 +40,10 @@ export default {
     data() {
         return {
             newTodo: {
-                id: 3,
+                // id: 3,
                 title: '',
                 description: '',
+                subject: Object,
             },
         }
     },
@@ -66,6 +55,10 @@ export default {
 
         anyRemaining() {
             return this.$store.getters.anyRemaining
+        },
+
+        getSubjects() {
+            return this.$store.getters.getSubjects
         }
     },
 
@@ -76,14 +69,18 @@ export default {
             }
 
             this.$store.dispatch('addTodo', {
-                id: this.idForTodo,
+                // id: this.idForTodo,
                 title: this.newTodo.title,
-                description: this.newTodo.description
+                description: this.newTodo.description,
+                priority: 0,
+                completed: false,
+                subject: this.newTodo.subject
             })
 
-            this.newTodo.id++
+            // this.newTodo.id++
             this.newTodo.title = '';
             this.newTodo.description = '';
+            this.newTodo.subject = Object
         },
     }
 

@@ -12,7 +12,7 @@
       <v-expand-transition>
         <div v-show="showDescription">
           <v-card-text class="todo-item-desc">
-            {{description}}
+            {{description}} - <span v-if="subject">{{subject.name}}</span>
           </v-card-text>
         </div>
       </v-expand-transition>
@@ -34,12 +34,14 @@ export default {
 
   data() {
     return {
+      data: false,
       showDescription: false,
       'id': this.todo.id,
       'title': this.todo.title,
       'description': this.todo.description,
       'completed': this.todo.completed,
-      'priority': this.todo.priority
+      'priority': this.todo.priority,
+      'subject': this.todo.subject
     }
   },
 
@@ -55,16 +57,12 @@ export default {
       this.$store.dispatch('updateTodo', {
         'id': this.id,
         'title': this.title,
+        'description': this.description,
         'completed': this.completed,
+        // 'subject': this.subject
       })
     },
 
-  },
-
-  watch: {
-    checkAll() {
-      this.completed = this.checkAll ? true: this.todo.completed
-    }
   },
 }
 </script>

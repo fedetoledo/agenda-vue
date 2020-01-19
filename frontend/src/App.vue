@@ -8,12 +8,12 @@
       <v-col cols="8">
         <v-row no-gutters>
           <v-col>
-            <MateriaList/>
+            <SubjectList/>
           </v-col>
         </v-row>
         <v-row no-gutters>
           <v-col class="mr-2">
-            <ParcialList/>
+            <ExamList/>
           </v-col>
           <v-col class="ml-2">
             Notas
@@ -27,16 +27,16 @@
 
 <script>
 import TodoList from './components/todos/TodoList';
-import MateriaList from './components/materias/MateriaList'
-import ParcialList from './components/parciales/ParcialList'
+import SubjectList from './components/subjects/SubjectList'
+import ExamList from './components/exams/ExamList'
 
 export default {
   name: 'App',
 
   components: {
     TodoList,
-    MateriaList,
-    ParcialList
+    SubjectList,
+    ExamList
   },
 
   data: () => ({
