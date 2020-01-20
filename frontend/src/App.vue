@@ -12,11 +12,8 @@
           </v-col>
         </v-row>
         <v-row no-gutters>
-          <v-col class="mr-2">
+          <v-col cols="12" class="mr-2">
             <ExamList/>
-          </v-col>
-          <v-col class="ml-2">
-            Notas
           </v-col>
         </v-row>
       </v-col>

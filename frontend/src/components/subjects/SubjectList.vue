@@ -3,7 +3,7 @@
       <div class="section-styled upper-section">
         <div class="cards-header">
             <h3 class="inline-h3">Materias</h3>
-            <v-btn @click.stop="dialog=true" outlined class="add-subject-btn">Agregar Materia</v-btn>
+            <v-btn @click.stop="dialog=true" outlined class="add-btn">Agregar Materia</v-btn>
 
         </div>
         <div class="subjects-list">
@@ -124,23 +124,6 @@ export default {
 </script>
 
 <style scoped>
-
-.cards-header {
-    display: flex;
-    justify-content: space-between;
-    margin: 0 10px;
-}
-
-.add-subject-btn {
-    display: inline-block;
-    background-color: #0079bf;
-    color: #fff;
-    margin-top: 10px;
-}
-
-.inline-h3 {
-    display: inline;
-}
 
 .subjects-list {
     min-height: 13em;

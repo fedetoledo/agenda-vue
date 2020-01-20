@@ -1,12 +1,28 @@
 <template>
-  <v-card class="my-3">
-      <v-card-title>
-          <p>{{subject}}</p>
-      </v-card-title>
-      <v-card-text>
-          <p>Fecha - {{getFormatedDate}}</p>
-      </v-card-text>
-  </v-card>
+<v-card>
+    <v-card-title class="exam-header">
+        <span class="name">{{subject.name}}</span>
+        <v-spacer></v-spacer>
+        <v-menu bottom left>
+            <template v-slot:activator="{ on }">
+                <v-btn v-on="on" icon small>
+                    <v-icon>mdi-dots-horizontal</v-icon>
+                </v-btn>
+            </template>
+            <v-list>
+                <v-list-item @click.stop="showEditModal=true">
+                    <v-list-item-title>Edit</v-list-item-title>
+                </v-list-item>
+                <v-list-item @click="deleteExam(exam.id)">
+                    <v-list-item-title>Delete</v-list-item-title>
+                </v-list-item>
+            </v-list>
+        </v-menu>
+    </v-card-title>
+    <v-card-text>
+        <p>Fecha - {{date}}</p>
+    </v-card-text>
+</v-card>
 </template>
 
 <script>
@@ -20,19 +36,21 @@ export default {
 
     data() {
         return {
+            showEditModal: false,
             id: this.exam.id,
-            nota: this.exam.nota,
-            fecha: this.exam.fecha,
+            grade: this.exam.grade,
+            date: this.exam.date,
             subject: this.exam.subject
         }
     },
 
-    computed: {
-        getFormatedDate() {
-            let timestamp = this.fecha.toDate().toLocaleString()
-            return timestamp
+    methods: {
+
+        deleteExam(id) {
+            this.$store.dispatch('deleteExam', id)
         }
-    }
+        
+    },
 }
 </script>
 

@@ -23,8 +23,9 @@ const actions = {
             response.data.forEach(exam => {
                 const data = {
                     id: exam.id,
-                    nota: exam.nota,
-                    fecha: exam.fecha,
+                    date: exam.date,
+                    grade: exam.grade,
+                    subject: exam.subject,
                 }
                 tempParciales.push(data)
             })
@@ -33,6 +34,40 @@ const actions = {
         .catch(error => {
             console.log(error)
         })
+    },
+
+    addExam: (context, exam) => {
+        axios.post(url, {
+            date: exam.date,
+            grade: exam.grade,
+            subject: exam.subject.id //Pass the id, not the entire object
+        })
+        .then(response => {
+            context.commit('addExam', response.data)
+        })
+        .catch(error => {
+            console.log(error)
+        })
+    },
+
+    deleteExam: (context, id) => {
+        axios.delete(url+id)
+        .then( () => {
+            context.commit('deleteExam', id)
+        })
+        .catch(error => {
+            console.log(error)
+        })
+    },
+
+    updateExam: (context, exam) => {
+        axios.patch(url+exam.id+'/', {
+            date: exam.date,
+            grade: exam.grade,
+        })
+        .then( response => {
+            context.commit('updateExam', response.data)
+        })
     }
 }
 
@@ -40,6 +75,20 @@ const mutations = {
 
     retrieveExams: (state, exams) => {
         state.exams = exams
+    },
+
+    addExam: (state, exam) => {
+        state.exams.push(exam)
+    },
+
+    deleteExam: (state, id) => {
+        const index = state.exams.findIndex(item => item.id == id)
+        state.exams.splice(index,1)
+    },
+
+    updateExam: (state, exam) => {
+        const index = state.exams.findIndex(item => item.id == exam.id)
+        state.exams.splice(index, 1, exam)
     }
 }
 

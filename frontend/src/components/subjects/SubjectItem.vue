@@ -32,6 +32,7 @@
               </v-col>
           </v-row>
       </v-card-text>
+      <!-- Edit modal -->
        <v-row justify="center">
             <v-dialog v-model="showEditModal" persistent max-width="600px">
                 <v-card>
@@ -57,6 +58,7 @@
                     <v-card-actions>
                         <v-spacer></v-spacer>
                         <v-btn color="blue darken-1" text @click="showEditModal = false">Close</v-btn>
+                        <!-- VER update method -->
                         <v-btn color="blue darken-1" text @click="showEditModal = false; updateSubject()">Save</v-btn>
                     </v-card-actions>
                 </v-card>

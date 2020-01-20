@@ -19,3 +19,20 @@
 .upper-section {
     min-height: 17em;
 }
+
+.cards-header {
+    display: flex;
+    justify-content: space-between;
+    margin: 0 10px;
+}
+
+.inline-h3 {
+    display: inline;
+}
+
+.add-btn {
+    display: inline-block;
+    background-color: #0079bf;
+    color: #fff !important;
+    margin-top: 10px;
+}
