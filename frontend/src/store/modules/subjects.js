@@ -29,7 +29,8 @@ const actions = {
                     id: doc.id,
                     name: doc.name,
                     schedule1: doc.schedule1,
-                    schedule2: doc.schedule2
+                    schedule2: doc.schedule2,
+                    color: doc.color,
                 }
                 tempSubjects.push(data)
             })
@@ -44,13 +45,15 @@ const actions = {
         axios.post(url, {
             name: subject.name,
             schedule1: subject.schedule1,
-            schedule2: subject.schedule2
+            schedule2: subject.schedule2,
+            color: subject.color,
         })
         .then(response => {
             context.commit('addSubject', {
                 name: response.data.name,
                 schedule1: response.data.schedule1,
-                schedule2: response.data.schedule2
+                schedule2: response.data.schedule2,
+                color: response.data.color,
             })
         })
         .catch(error => {
@@ -75,6 +78,7 @@ const actions = {
             name: subject.name,
             schedule1: subject.schedule1,
             schedule2: subject.schedule2,
+            color: subject.color,
         })
         .then(response => {
             context.commit('updateSubject', response.data)
