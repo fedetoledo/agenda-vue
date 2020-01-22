@@ -26,13 +26,16 @@
                     <v-card-text>
                         <v-container>
                             <v-row>
-                            <v-col cols="12">
+                            <v-col cols="6">
                                 <v-text-field :rules="rules" v-model="newSubject.name" label="Name*" required></v-text-field>
                             </v-col>
-                            <v-col cols="12">
+                            <v-col cols="6">
+                                <v-select v-model="newSubject.color" item-text="text" item-value="value" placeholder="Color" :items="getColors"></v-select>
+                            </v-col>
+                            <v-col cols="6">
                                 <v-text-field v-model="newSubject.schedule1"  placeholder="Lun-20:00 a 22:00" label="Horario 1" required></v-text-field>
                             </v-col>
-                            <v-col cols="12">
+                            <v-col cols="6">
                                 <v-text-field v-model="newSubject.schedule2"  placeholder="Mar-20:00 a 22:00" label="Horario 2" required></v-text-field>
                             </v-col>
                             </v-row>
@@ -64,10 +67,11 @@ export default {
                 name: '',
                 schedule1: '',
                 schedule2: '',
+                color: '',
             },
             rules: [
                 value => !!value || 'Required',
-            ]
+            ],
         }
     },
 
@@ -83,6 +87,10 @@ export default {
     computed: {
         getSubjects() {
             return this.$store.getters.getSubjects
+        },
+
+        getColors() {
+            return this.$store.getters.getColors
         }
     },
 
@@ -100,6 +108,7 @@ export default {
                 name: this.newSubject.name,
                 schedule1: this.newSubject.schedule1,
                 schedule2: this.newSubject.schedule2,
+                color: this.newSubject.color,
             }
 
             if(subject.schedule1.trim().length == 0) {
@@ -117,6 +126,7 @@ export default {
             this.newSubject.name = ''
             this.newSubject.schedule1 = ''
             this.newSubject.schedule2 = ''
+            this.newSubject.color = ''
         }
     }
 

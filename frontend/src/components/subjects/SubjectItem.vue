@@ -1,5 +1,5 @@
 <template>
-  <v-card class=" subject-item">
+  <v-card :color="color" class="subject-item">
       <v-card-title class="subject-header">
           <span class="name">
               {{name}}
@@ -8,7 +8,7 @@
            <v-menu bottom left>
             <template v-slot:activator="{ on }">
                 <v-btn v-on="on" icon small>
-                    <v-icon>mdi-dots-horizontal</v-icon>
+                    <v-icon color="white">mdi-dots-horizontal</v-icon>
                 </v-btn>
             </template>
 
@@ -39,16 +39,19 @@
                     <v-card-title>
                         <span class="headline">Edit subject</span>
                     </v-card-title>
-                    <v-card-text>
+                    <v-card-text class="card-text">
                         <v-container>
                             <v-row>
-                            <v-col cols="12">
+                            <v-col cols="6">
                                 <v-text-field v-model="name" label="name*" required></v-text-field>
                             </v-col>
-                             <v-col cols="12">
+                            <v-col cols="6">
+                                <v-select v-model="color" placeholder="Color" :items="getColors" item-text="text" item-value="value"></v-select>
+                            </v-col>
+                             <v-col cols="6">
                                 <v-text-field v-model="schedule1"  placeholder="Lun-20:00 a 22:00" label="Horario 1"></v-text-field>
                             </v-col>
-                             <v-col cols="12">
+                             <v-col cols="6">
                                 <v-text-field v-model="schedule2"  placeholder="Mar-20:00 a 22:00" label="Horario 2"></v-text-field>
                             </v-col>
                             </v-row>
@@ -83,12 +86,19 @@ export default {
             name: this.subject.name,
             schedule1: this.subject.schedule1,
             schedule2: this.subject.schedule2,
+            color: this.subject.color,
             showMenu: false,
             showEditModal: false,
         }
     },
 
-methods: {
+    computed: {
+        getColors() {
+            return this.$store.getters.getColors
+        }
+    },
+
+    methods: {
 
         deleteSubject(id) {
             this.$store.dispatch('deleteSubject', id)
@@ -100,6 +110,7 @@ methods: {
                 name: this.name,
                 schedule1: this.schedule1,
                 schedule2: this.schedule2,
+                color: this.color,
             })
         }        
     }
@@ -126,6 +137,15 @@ methods: {
 
     .name {
         font-size: 0.8em;
+        color: #fff;
+    }
+
+    .edit-icon {
+        color: #fff;
+    }
+
+    .card-text {
+        background: #fff !important;
     }
 
     .schedule {
