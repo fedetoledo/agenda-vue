@@ -1,5 +1,5 @@
 <template>
-  <v-chip small outlined label :color="priorityColorCode">{{verbosePriority}}</v-chip>
+  <v-chip small dark label :color="priorityColorCode">{{verbosePriority}}</v-chip>
 </template>
 
 <script>

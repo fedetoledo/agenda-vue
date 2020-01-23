@@ -1,25 +1,32 @@
 <template>
   <v-card class="todo">
-      <v-card-title class="todo-title d-flex justify-space-between">
-        <label>
-          <input type="checkbox" v-model="completed" @change="doneEdit">
-        </label>
-        <span @click="showDescription = !showDescription" :class="{completed: completed}">{{title}}</span>
-        <v-btn icon small @click="deleteTodo(todo.id)" >
-          <v-icon small>mdi-close</v-icon>
+    <div class="todo-header">
+      <div class="overline d-flex justify-space-between">
+        <SubjectTag :subject="todo.subject"/>
+        <v-btn class="edit-pencil" icon small>
+          <v-icon >mdi-pencil-outline</v-icon>
         </v-btn>
-      </v-card-title>
-      <v-expand-transition>
-        <div v-show="showDescription">
-          <v-card-text class="todo-item-desc">
-            {{description}} - <span v-if="subject">{{subject.name}}</span>
-          </v-card-text>
+      </div>
+      <v-card-title class="todo-title">
+        <div @click="showDescription = !showDescription" :class="{completed: completed}">
+          <span>{{title}}</span> <PriorityTag :priority="todo.priority"/>
         </div>
-      </v-expand-transition>
+      </v-card-title>
+    </div>
+    <!-- <v-expand-transition>
+      <div v-show="showDescription">
+        <v-card-text class="todo-item-desc">
+          {{description}} - <span @click="deleteTodo(todo.id)">X</span>
+        </v-card-text>
+      </div>
+    </v-expand-transition> -->
   </v-card>
 </template>
 
 <script>
+import PriorityTag from '../extra/PriorityTag'
+import SubjectTag from '../extra/SubjectTag'
+
 export default {
   props: {
     todo: {
@@ -29,7 +36,12 @@ export default {
     checkAll: {
       type: Boolean,
       required: true
-    }
+    },
+  },
+  
+  components: {
+    PriorityTag,
+    SubjectTag,
   },
 
   data() {
@@ -62,8 +74,8 @@ export default {
         // 'subject': this.subject
       })
     },
-
   },
+
 }
 </script>
 
@@ -73,11 +85,26 @@ export default {
   margin: 5px 0;
 }
 
+.todo:hover {
+  cursor: pointer;
+}
+
+.todo-header {
+  padding: 10px;
+}
+
+.overline {
+  text-align: left;
+}
+
 .todo-title {
   user-select: none;
-  padding: 5px 10px;
-  font-size: 1em;
-  cursor: pointer;
+  padding: 0;
+  font-size: 1.15em;
+}
+
+.title {
+  margin-right: 5px;
 }
 
 .completed {
@@ -85,4 +112,11 @@ export default {
   color: #aaa;
 }
 
+.todo .edit-pencil {
+  visibility: hidden;
+}
+
+.todo:hover .edit-pencil {
+  visibility: visible;
+}
 </style>

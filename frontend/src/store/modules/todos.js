@@ -28,14 +28,16 @@ const getters = {
     todosFiltered: state => {
         if(state.filter == 'all') {
             return state.todos
-        } else if (state.filter == 'completed') {
-            return state.todos.filter(todo => todo.completed)
-        } else if (state.filter == 'active') {
-            return state.todos.filter(todo => !todo.completed)
+        } else if (state.filter == 'low') {
+            return state.todos.filter(todo => todo.priority == 0)
+        } else if (state.filter == 'middle') {
+            return state.todos.filter(todo => todo.priority == 1)
+        } else if(state.filter == 'high') {
+            return state.todos.filter(todo => todo.priority == 2)
         }
         return state.todos
     },
-    
+
     remaining: state => {
         return state.todos.filter(todo => !todo.completed).length
     },

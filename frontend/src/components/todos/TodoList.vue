@@ -3,13 +3,25 @@
         <div class="section-styled upper-section">
             <h3>Tareas</h3>
             <div class="add-todo-form">
-                <v-text-field class="input-text" hide-details="auto" autofocus="" solo dense label="Titulo" v-model="newTodo.title"/>
-                <v-text-field class="input-text" hide-details="auto" solo dense label="Descripcion" v-model="newTodo.description" @keyup.enter="addTodo"/>
-                <v-select return-object v-model="newTodo.subject" item-text="name" :items="getSubjects"  placeholder="Materia"></v-select>
+                <v-row justify="center">
+                    <v-col cols="11">
+                        <v-text-field class="input-text" hide-details="auto" autofocus="" solo dense label="Titulo" v-model="newTodo.title"/>
+                    </v-col>
+                </v-row>
+                <!-- <v-text-field class="input-text" hide-details="auto" solo dense label="Descripcion" v-model="newTodo.description" @keyup.enter="addTodo"/> -->
+                <v-row no-gutters justify="space-around">
+                    <v-col cols="5">
+                        <v-select return-object v-model="newTodo.subject" item-text="name" :items="getSubjects"  placeholder="Materia"></v-select>
+                    </v-col>
+                    <v-col cols="5">
+                        <v-select v-model="newTodo.priority" item-name="text" item-value="value" :items="priorityNums" @keyup.enter="addTodo" placeholder="Prioridad"></v-select>
+                    </v-col>
+                </v-row>
+                
             </div>
-            <TodoFiltered/>
         </div>
         <div class="section-styled">
+            <TodoFiltered/>
             <!-- CSS LOADING -->
             <div v-if="$store.state.todos.loading" class="lds-facebook"><div></div><div></div><div></div></div>
             <TodoItem
@@ -42,9 +54,15 @@ export default {
             newTodo: {
                 // id: 3,
                 title: '',
-                description: '',
+                // description: '',
                 subject: Object,
+                priority: null,
             },
+            priorityNums: [
+                {text: 'Low', value: 0},
+                {text: 'Middle', value: 1},
+                {text: 'High', value:2}
+            ]
         }
     },
 
@@ -71,16 +89,17 @@ export default {
             this.$store.dispatch('addTodo', {
                 // id: this.idForTodo,
                 title: this.newTodo.title,
-                description: this.newTodo.description,
-                priority: 0,
+                // description: this.newTodo.description,
+                priority: this.newTodo.priority,
                 completed: false,
                 subject: this.newTodo.subject
             })
 
             // this.newTodo.id++
             this.newTodo.title = '';
-            this.newTodo.description = '';
+            // this.newTodo.description = '';
             this.newTodo.subject = Object
+            this.newTodo.priority = null
         },
     }
 

@@ -1,9 +1,10 @@
 <template>
-    <div class="filters">
-        <v-btn class="mx-1" text x-small :class="{active: filter == 'all'}" @click="changeFilter('all')">All</v-btn>
-        <v-btn class="mx-1" text x-small :class="{active: filter == 'active'}" @click="changeFilter('active')">Active</v-btn>
-        <v-btn class="mx-1" text x-small :class="{active: filter == 'completed'}" @click="changeFilter('completed')">Completed</v-btn>
-    </div>
+    <v-row no-gutters justify="center" class="filters">
+        <v-col cols="10">
+            <!-- @input will pass the selected item automatically to changeFilter -->
+            <v-overflow-btn @input="changeFilter" label="Filter by priority" :items="filters">Priority</v-overflow-btn>
+        </v-col>
+    </v-row>
 </template>
 
 <script>
@@ -17,6 +18,12 @@ export default {
     methods: {
         changeFilter(filter) {
             this.$store.dispatch('changeFilter', filter)
+        }
+    },
+
+    data() {
+        return {
+            filters: ['all','low','middle','high']
         }
     }
 }
