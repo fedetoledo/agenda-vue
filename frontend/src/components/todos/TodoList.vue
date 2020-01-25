@@ -14,7 +14,10 @@
                         <v-select return-object v-model="newTodo.subject" item-text="name" :items="getSubjects"  placeholder="Materia"></v-select>
                     </v-col>
                     <v-col cols="5">
-                        <v-select v-model="newTodo.priority" item-name="text" item-value="value" :items="priorityNums" @keyup.enter="addTodo" placeholder="Prioridad"></v-select>
+                        <v-select v-model="newTodo.priority" item-name="text" item-value="value" :items="priorityNums" placeholder="Prioridad"></v-select>
+                    </v-col>
+                    <v-col cols="12">
+                        <v-btn @click="addTodo">Add Todo</v-btn>
                     </v-col>
                 </v-row>
                 

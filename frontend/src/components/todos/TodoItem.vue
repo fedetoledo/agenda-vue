@@ -3,14 +3,14 @@
     <div class="todo-header">
       <div class="overline d-flex justify-space-between">
         <SubjectTag :subject="todo.subject"/>
-        <v-btn class="edit-pencil" icon small>
+        <v-btn @click="showAlert('editmissing')" class="edit-pencil" icon small>
           <v-icon >mdi-pencil-outline</v-icon>
         </v-btn>
       </div>
-      <v-card-title class="todo-title">
-        <div @click="showDescription = !showDescription" :class="{completed: completed}">
-          <span>{{title}}</span> <PriorityTag :priority="todo.priority"/>
-        </div>
+      <v-card-title class="todo-title d-flex justify-space-between">
+        <!-- <div @click="showDescription = !showDescription" :class="{completed: completed}"> -->
+              <span>{{title}}</span><PriorityTag :priority="todo.priority"/>
+        <!-- </div> -->
       </v-card-title>
     </div>
     <!-- <v-expand-transition>
@@ -58,6 +58,11 @@ export default {
   },
 
   methods: {
+
+    showAlert(msg) {
+      alert(msg)
+    },
+    
     deleteTodo(id) {
       this.$store.dispatch('deleteTodo', id)
     },

@@ -17,14 +17,6 @@ const getters = {
         return state.todos
     },
 
-    completedTodos: state => {
-        return state.todos.filter(todo => todo.completed)
-    },
-
-    completedTodosCount: (state, getters) => {
-        return getters.completedTodos.length
-    },
-
     todosFiltered: state => {
         if(state.filter == 'all') {
             return state.todos
@@ -37,15 +29,6 @@ const getters = {
         }
         return state.todos
     },
-
-    remaining: state => {
-        return state.todos.filter(todo => !todo.completed).length
-    },
-    
-    anyRemaining: (state, getters) => {
-        return getters.remaining != 0
-    },
-    
 }
 
 const actions = {
@@ -87,19 +70,19 @@ const actions = {
     },
 
     addTodo: (context,todo) => {
+            console.log(todo.subject.id)
             axios.post(url,{
                 title: todo.title,
-                description: todo.description,
                 priority: todo.priority,
                 completed: false,
                 // Axios expects an ID, not the entire object
                 subject: todo.subject.id,
             })
             .then(response => {
+                console.log(response.data)
                 context.commit('addTodo', {
                     id: response.data.id,
                     title: todo.title,
-                    description: todo.description,
                     priority: todo.priority,
                     completed: false,
                     //Here I can send the entire object and then use it in component
@@ -115,9 +98,7 @@ const actions = {
         axios.patch(url+todo.id+'/', {
             title: todo.title,
             description: todo.description,
-            // priority: todo.priority,
             completed: todo.completed,
-            // subject: todo.subject.id
         })
         .then(() => {
             context.commit('updateTodo', todo)

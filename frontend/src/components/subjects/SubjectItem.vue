@@ -101,6 +101,7 @@ export default {
     methods: {
 
         deleteSubject(id) {
+            console.log(id)
             this.$store.dispatch('deleteSubject', id)
         },
 

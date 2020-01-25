@@ -1,5 +1,6 @@
 <template>
-  <v-chip small dark label :color="priorityColorCode">{{verbosePriority}}</v-chip>
+  <!-- <v-chip small dark label :color="priorityColorCode">{{verbosePriority}}</v-chip> -->
+  <v-icon :color="priorityColorCode">mdi-alert-circle</v-icon>
 </template>
 
 <script>

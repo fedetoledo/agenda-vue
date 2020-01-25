@@ -38,7 +38,7 @@ const actions = {
     },
 
     addExam: (context, exam) => {
-        console.log(exam.typeOf)
+        console.log(exam)
         axios.post(url, {
             date: exam.date,
             grade: exam.grade,

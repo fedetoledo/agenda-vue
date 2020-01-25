@@ -26,18 +26,29 @@
                     <v-card-text>
                         <v-container>
                             <v-row>
-                            <v-col cols="6">
-                                <v-text-field :rules="rules" v-model="newSubject.name" label="Name*" required></v-text-field>
-                            </v-col>
-                            <v-col cols="6">
-                                <v-select v-model="newSubject.color" item-text="text" item-value="value" placeholder="Color" :items="getColors"></v-select>
-                            </v-col>
-                            <v-col cols="6">
-                                <v-text-field v-model="newSubject.schedule1"  placeholder="Lun-20:00 a 22:00" label="Horario 1" required></v-text-field>
-                            </v-col>
-                            <v-col cols="6">
-                                <v-text-field v-model="newSubject.schedule2"  placeholder="Mar-20:00 a 22:00" label="Horario 2" required></v-text-field>
-                            </v-col>
+                                <v-col cols="12">
+                                    <v-text-field :rules="rules" v-model="newSubject.name" label="Name*" required></v-text-field>
+                                </v-col>
+                                <!-- <v-col cols="6">
+                                    <v-select v-model="newSubject.color" item-text="text" item-value="value" placeholder="Color" :items="getColors"></v-select>
+                                </v-col> -->
+                                <v-col cols="6">
+                                    <v-text-field v-model="newSubject.schedule1"  placeholder="Lun-20:00 a 22:00" label="Horario 1" required></v-text-field>
+                                </v-col>
+                                <v-col cols="6">
+                                    <v-text-field v-model="newSubject.schedule2"  placeholder="Mar-20:00 a 22:00" label="Horario 2" required></v-text-field>
+                                </v-col>
+                                <v-col cols="12">
+                                    <div class="color-picker">
+                                        <strong>Elige un color: </strong>
+                                        <swatches
+                                            class="swatch"
+                                            :colors="getColors"
+                                            v-model="newSubject.color"
+                                            inline
+                                        />
+                                    </div>
+                                </v-col>
                             </v-row>
                         </v-container>
                         <small>*indicates required field</small>
@@ -55,6 +66,7 @@
 
 <script>
 import SubjectItem from './SubjectItem'
+import Swatches from 'vue-swatches'
 // import draggable from 'vuedraggable'
 
 export default {
@@ -63,11 +75,11 @@ export default {
         return {
             dialog: false,
             newSubject: {
-                id: 6,
+                id: 0,
                 name: '',
                 schedule1: '',
                 schedule2: '',
-                color: '',
+                color: '#ffeb3b',
             },
             rules: [
                 value => !!value || 'Required',
@@ -77,6 +89,7 @@ export default {
 
     components: {
         SubjectItem,
+        Swatches
         // draggable
     },
 
@@ -102,9 +115,8 @@ export default {
                 return
             }
 
-
             const subject = {
-                id: this.idForSubject,
+                id: this.newSubject.id,
                 name: this.newSubject.name,
                 schedule1: this.newSubject.schedule1,
                 schedule2: this.newSubject.schedule2,
@@ -118,7 +130,6 @@ export default {
             if(subject.schedule2.trim().length == 0) {
                 subject.schedule2 = "No second schedule"
             }
-
             
             this.$store.dispatch('addSubject', subject)
 
@@ -126,7 +137,7 @@ export default {
             this.newSubject.name = ''
             this.newSubject.schedule1 = ''
             this.newSubject.schedule2 = ''
-            this.newSubject.color = ''
+            this.newSubject.color = '#ffeb3b'
         }
     }
 
@@ -150,6 +161,11 @@ export default {
   background: #c8ebfb;
 }
 
-
+.swatch {
+    border: none;
+    outline: none;
+    /* max-height: 70px; */
+    overflow: hidden;
+}
 
 </style>

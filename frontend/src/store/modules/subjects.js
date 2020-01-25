@@ -50,6 +50,7 @@ const actions = {
         })
         .then(response => {
             context.commit('addSubject', {
+                id: response.data.id,
                 name: response.data.name,
                 schedule1: response.data.schedule1,
                 schedule2: response.data.schedule2,
@@ -63,9 +64,8 @@ const actions = {
 
     deleteSubject: (context, id) => {
         axios.delete(url+id)
-        .then(response => {
+        .then( () => {
             context.commit('deleteSubject', id)
-            console.log(response)
         })
         .catch(error => {
             console.log(error)
