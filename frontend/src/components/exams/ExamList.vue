@@ -10,7 +10,7 @@
                 :headers="headers"
                 :items="getExams"
                 :items-per-page="5"
-                class=" exams-table elevation-2">
+                class="exams-table elevation-2">
                 <template v-slot:item.action="{ item }">
                     <v-icon
                         small
@@ -44,7 +44,10 @@
                             <v-col cols="12">
                                 <v-text-field v-model="newExam.date"  placeholder="19/09/2020 20:00" label="Fecha" required />
                             </v-col>
-                            <v-col cols="12">
+                            <v-col cols="6">
+                                <v-select v-model="newExam.typeOf" label="Tipo de Examen" :items="typeOf" required></v-select>
+                            </v-col>
+                            <v-col cols="6">
                                 <v-text-field v-model="newExam.grade" label="Nota" required />
                             </v-col>
                         </v-row>
@@ -106,18 +109,23 @@ export default {
                 date: '',
                 subject: Object,
                 grade: 0,
+                typeOf: ''
             },
             headers: [
                 {text: 'Materia', value: 'subject.name'},
                 {text: 'Fecha', value: 'date'},
                 {text: 'Nota', value: 'grade'},
-                {text: 'Actions', value: 'action', sortable: false}
+                {text: 'Tipo', value: 'typeOf'},
+                {text: 'Actions', value: 'action', sortable: false},
             ],
             editedExam: {
                 date: '',
                 subect: Object,
                 grade: 0,
-            }
+                typeOf: '',
+            },
+
+            typeOf: ['Parcial', 'Final']
         }
     },
 

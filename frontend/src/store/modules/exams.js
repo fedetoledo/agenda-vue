@@ -26,6 +26,7 @@ const actions = {
                     date: exam.date,
                     grade: exam.grade,
                     subject: exam.subject,
+                    typeOf: exam.typeOf
                 }
                 tempParciales.push(data)
             })
@@ -37,10 +38,12 @@ const actions = {
     },
 
     addExam: (context, exam) => {
+        console.log(exam.typeOf)
         axios.post(url, {
             date: exam.date,
             grade: exam.grade,
-            subject: exam.subject.id //Pass the id, not the entire object
+            subject: exam.subject.id, //Pass the id, not the entire object
+            typeOf: exam.typeOf
         })
         .then(response => {
             context.commit('addExam', response.data)
