@@ -2,7 +2,7 @@ import axios from 'axios'
 
 //Todos Store
 
-const url = 'http://localhost:8000/api/todos/'
+const url = 'https://safe-coast-17254.herokuapp.com/api/todos/'
 
 //Initial State
 const state = {

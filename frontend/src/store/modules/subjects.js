@@ -3,7 +3,7 @@ import axios from 'axios'
 //subjects Store
 
 //API URL
-const url = "http://localhost:8000/api/subjects/"
+const url = "https://safe-coast-17254.herokuapp.com/api/subjects/"
 
 //Initial State
 const state = {

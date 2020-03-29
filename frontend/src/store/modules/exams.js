@@ -1,6 +1,6 @@
 import axios from 'axios'
 //exams Store
-const url = "http://localhost:8000/api/exams/"
+const url = "https://safe-coast-17254.herokuapp.com/api/exams/"
 
 //Initial state
 const state = {
