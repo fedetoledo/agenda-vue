@@ -1,5 +1,5 @@
 <template>
-  <v-card class="todo">
+  <v-card @click="showDescription = !showDescription" class="todo">
     <div class="todo-header">
       <div class="overline d-flex justify-space-between">
         <SubjectTag :subject="todo.subject"/>
@@ -13,13 +13,13 @@
         <!-- </div> -->
       </v-card-title>
     </div>
-    <!-- <v-expand-transition>
+    <v-expand-transition>
       <div v-show="showDescription">
         <v-card-text class="todo-item-desc">
           {{description}} - <span @click="deleteTodo(todo.id)">X</span>
         </v-card-text>
       </div>
-    </v-expand-transition> -->
+    </v-expand-transition>
   </v-card>
 </template>
 

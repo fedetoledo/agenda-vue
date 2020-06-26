@@ -40,7 +40,7 @@
                         <span class="headline">Edit subject</span>
                     </v-card-title>
                     <v-card-text class="card-text">
-                        <v-container>
+                        <v-container class="edit-modal">
                             <v-row>
                             <v-col cols="6">
                                 <v-text-field v-model="name" label="name*" required></v-text-field>
@@ -66,7 +66,7 @@
                     </v-card-actions>
                 </v-card>
             </v-dialog>
-            </v-row>
+        </v-row>
   </v-card>
 </template>
 
@@ -119,6 +119,15 @@ export default {
 </script>
 
 <style scoped>
+
+    hr {
+        padding: 0;
+        margin: 0;
+    }
+
+    .edit-modal {
+        background-color: #fff;
+    }
 
     .subject-item {
         min-height: 10em;

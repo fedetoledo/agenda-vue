@@ -2,7 +2,7 @@ import axios from 'axios'
 
 //Todos Store
 
-const url = 'https://safe-coast-17254.herokuapp.com/api/todos/'
+const url = 'https://agenda-vue-django-api.herokuapp.com/api/todos/'
 
 //Initial State
 const state = {

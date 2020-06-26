@@ -6,6 +6,7 @@
             <v-btn @click.stop="dialog=true" outlined class="add-btn">Agregar Examen</v-btn>
         </div>
         <template>
+            <div v-if="$store.state.exams.loading" class="lds-facebook"><div></div><div></div><div></div></div>
             <v-data-table
                 :headers="headers"
                 :items="getExams"

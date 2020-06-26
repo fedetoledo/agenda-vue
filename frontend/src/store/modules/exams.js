@@ -1,10 +1,11 @@
 import axios from 'axios'
 //exams Store
-const url = "https://safe-coast-17254.herokuapp.com/api/exams/"
+const url = "https://agenda-vue-django-api.herokuapp.com/api/exams/"
 
 //Initial state
 const state = {
-    exams: []
+    exams: [],
+    loading: true
 }
 
 const getters = {
@@ -17,6 +18,7 @@ const getters = {
 const actions = {
 
     retrieveExams: context => {
+        context.state.loading = true
         axios.get(url)
         .then(response => {
             let tempParciales = []
@@ -30,6 +32,7 @@ const actions = {
                 }
                 tempParciales.push(data)
             })
+            context.state.loading = false
             context.commit('retrieveExams', tempParciales)
         })
         .catch(error => {

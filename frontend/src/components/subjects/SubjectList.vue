@@ -7,6 +7,7 @@
 
         </div>
         <div class="subjects-list">
+            <div v-if="$store.state.exams.loading" class="lds-facebook"><div></div><div></div><div></div></div>
             <SubjectItem
                 v-for="subject in getSubjects"
                 :key="subject.id"

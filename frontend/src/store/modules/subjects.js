@@ -3,7 +3,7 @@ import axios from 'axios'
 //subjects Store
 
 //API URL
-const url = "https://safe-coast-17254.herokuapp.com/api/subjects/"
+const url = "https://agenda-vue-django-api.herokuapp.com/api/subjects/"
 
 //Initial State
 const state = {
@@ -19,8 +19,8 @@ const getters = {
 }
 
 const actions = {
-
     retrieveSubjects: context => {
+        context.state.loading = true
         axios.get(url)
         .then(response => {
             let tempSubjects = []
@@ -34,6 +34,7 @@ const actions = {
                 }
                 tempSubjects.push(data)
             })
+            context.state.loading = false
             context.commit('retrieveSubjects', tempSubjects)
         })
         .catch(error => {

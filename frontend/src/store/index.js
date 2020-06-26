@@ -3,6 +3,7 @@ import Vuex from 'vuex'
 import todos from './modules/todos'
 import subjects from './modules/subjects'
 import exams from './modules/exams'
+import auth from './modules/auth'
 import main from './main'
 
 Vue.use(Vuex)
@@ -12,6 +13,7 @@ export default new Vuex.Store({
         main,
         todos,
         subjects,
-        exams
-    }
+        exams,
+        auth
+    },
 })
