@@ -18,6 +18,10 @@ const mutations = {
     },
     SET_USER: (state, data) => {
         state.user.data = data
+    },
+    LOGOUT: state => {
+        state.user.data = null
+        state.user.loggedIn = false
     }
 }
 
@@ -34,6 +38,10 @@ const actions = {
         } else {
             commit('SET_USER', null)
         }
+    },
+
+    logout: ({commit}) => {
+        commit('LOGOUT')
     }
 }
 

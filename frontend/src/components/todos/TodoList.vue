@@ -1,31 +1,37 @@
 <template>
     <div class="wrapper">
         <div class="section-styled upper-section">
-            <h3>Tareas</h3>
+            <h3 class="title">Tareas</h3>
             <div class="add-todo-form">
-                <v-row justify="center">
-                    <v-col cols="11">
-                        <v-text-field class="input-text" hide-details="auto" autofocus="" solo dense placeholder="Titulo" v-model="newTodo.title"/>
-                    </v-col>
-                </v-row>
-                <v-row justify="center">
-                    <v-col cols="11">
-                        <v-textarea solo dense placeholder="Descripcion"></v-textarea>
-                    </v-col>
-                </v-row>
-                <!-- <v-text-field class="input-text" hide-details="auto" solo dense label="Descripcion" v-model="newTodo.description" @keyup.enter="addTodo"/> -->
-                <v-row no-gutters justify="space-around">
-                    <v-col cols="5">
-                        <v-select return-object v-model="newTodo.subject" item-text="name" :items="getSubjects"  placeholder="Materia"></v-select>
-                    </v-col>
-                    <v-col cols="5">
-                        <v-select v-model="newTodo.priority" item-name="text" item-value="value" :items="priorityNums" placeholder="Prioridad"></v-select>
-                    </v-col>
-                    <v-col cols="12">
-                        <v-btn @click="addTodo">Add Todo</v-btn>
-                    </v-col>
-                </v-row>
-                
+                <b-field>
+                    <b-input v-model="newTodo.title" placeholder="Titulo"></b-input>
+                </b-field>
+                <b-field>
+                    <b-input v-model="newTodo.description" placeholder="Descripcion" maxlength="400" type="textarea"></b-input>
+                </b-field>
+                <div class="columns todo-selects">
+                    <b-field class="column is-6">
+                        <b-select v-model="newTodo.subject" placeholder="Materia">
+                            <option
+                                v-for="subject in getSubjects"
+                                :value="subject"
+                                :key="subject.id">                       
+                                {{subject.name}}
+                            </option>
+                        </b-select>
+                        </b-field>
+                    <b-field class="column is-4">
+                        <b-select v-model="newTodo.priority" placeholder="Prioridad">
+                            <option
+                                v-for="priority in priorityNums"
+                                :value="priority.value"
+                                :key="priority.value">
+                                {{priority.text}}
+                            </option>
+                        </b-select>
+                    </b-field>
+                </div>
+                <b-button expanded class="add-btn" @click="addTodo"><strong>Agregar tarea</strong></b-button>
             </div>
         </div>
         <div class="section-styled">
@@ -62,14 +68,14 @@ export default {
             newTodo: {
                 // id: 3,
                 title: '',
-                // description: '',
-                subject: Object,
+                description: null,
+                subject: null,
                 priority: null,
             },
             priorityNums: [
-                {text: 'Low', value: 0},
-                {text: 'Middle', value: 1},
-                {text: 'High', value:2}
+                {text: 'Baja', value: 0},
+                {text: 'Media', value: 1},
+                {text: 'Alta', value:2}
             ]
         }
     },
@@ -97,16 +103,16 @@ export default {
             this.$store.dispatch('addTodo', {
                 // id: this.idForTodo,
                 title: this.newTodo.title,
-                // description: this.newTodo.description,
+                description: this.newTodo.description,
                 priority: this.newTodo.priority,
                 completed: false,
-                subject: this.newTodo.subject
+                subject: this.newTodo.subject,
             })
 
             // this.newTodo.id++
             this.newTodo.title = '';
-            // this.newTodo.description = '';
-            this.newTodo.subject = Object
+            this.newTodo.description = '';
+            this.newTodo.subject = null
             this.newTodo.priority = null
         },
     }
@@ -116,6 +122,14 @@ export default {
 </script>
 
 <style scoped>
+
+.todo-selects {
+    justify-content: space-between;
+}
+
+.add-todo-form {
+    margin: 10px 10px;
+}
 
 .add-todo-form .input-text {
     margin-bottom: 15px;

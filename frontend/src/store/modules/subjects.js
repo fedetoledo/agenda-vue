@@ -1,4 +1,5 @@
 import axios from 'axios'
+import firebase from 'firebase'
 
 //subjects Store
 
@@ -24,13 +25,15 @@ const actions = {
         axios.get(url)
         .then(response => {
             let tempSubjects = []
-            response.data.forEach(doc => {
+            let userSubjects = response.data.filter(doc => doc.userUid == firebase.auth().currentUser.uid)
+            userSubjects.forEach(doc => {
                 const data = {
                     id: doc.id,
                     name: doc.name,
                     schedule1: doc.schedule1,
                     schedule2: doc.schedule2,
                     color: doc.color,
+                    userUid: doc.userUid
                 }
                 tempSubjects.push(data)
             })
@@ -48,6 +51,7 @@ const actions = {
             schedule1: subject.schedule1,
             schedule2: subject.schedule2,
             color: subject.color,
+            userUid: firebase.auth().currentUser.uid
         })
         .then(response => {
             context.commit('addSubject', {
@@ -56,6 +60,7 @@ const actions = {
                 schedule1: response.data.schedule1,
                 schedule2: response.data.schedule2,
                 color: response.data.color,
+                userUid: response.data.userUid
             })
         })
         .catch(error => {

@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import App from './App.vue'
-import vuetify from './plugins/vuetify';
+import buefy from './plugins/buefy';
 // import {store} from './store/deprecated-store';
 import store from './store/'
 import './assets/css/global.css'
@@ -21,14 +21,10 @@ const firebaseConfig = {
 
 firebase.initializeApp(firebaseConfig)
 
-firebase.auth().onAuthStateChanged(user => {
-  store.dispatch("fetchUser", user)
-  console.log(user)
-})
 
 new Vue({
   router,
-  vuetify,
+  buefy,
   store,
   render: h => h(App)
 }).$mount('#app')

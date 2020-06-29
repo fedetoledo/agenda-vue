@@ -10,12 +10,13 @@
   },
   "dependencies": {
     "axios": "^0.19.1",
+    "buefy": "^0.8.20",
     "core-js": "^3.4.3",
     "firebase": "^7.15.4",
     "null-loader": "^3.0.0",
     "vue": "^2.6.10",
     "vue-router": "^3.3.4",
-    "vue-swatches": "^1.0.4",
+    "vue-swatches": "^2.1.0",
     "vuedraggable": "^2.23.2",
     "vuetify": "^2.1.0",
     "vuex": "^3.1.2"

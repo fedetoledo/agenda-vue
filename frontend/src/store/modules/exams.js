@@ -1,4 +1,5 @@
 import axios from 'axios'
+import firebase from 'firebase'
 //exams Store
 const url = "https://agenda-vue-django-api.herokuapp.com/api/exams/"
 
@@ -22,13 +23,16 @@ const actions = {
         axios.get(url)
         .then(response => {
             let tempParciales = []
-            response.data.forEach(exam => {
+            let userExams = response.data.filter(doc => doc.userUid == firebase.auth().currentUser.uid)
+            userExams.forEach(exam => {
                 const data = {
                     id: exam.id,
                     date: exam.date,
+                    time: exam.time,
                     grade: exam.grade,
                     subject: exam.subject,
-                    typeOf: exam.typeOf
+                    typeOf: exam.typeOf,
+                    userUid: exam.userUid
                 }
                 tempParciales.push(data)
             })
@@ -41,18 +45,19 @@ const actions = {
     },
 
     addExam: (context, exam) => {
-        console.log(exam)
         axios.post(url, {
             date: exam.date,
+            time: exam.time,
             grade: exam.grade,
             subject: exam.subject.id, //Pass the id, not the entire object
-            typeOf: exam.typeOf
+            typeOf: exam.typeOf,
+            userUid: exam.subject.userUid
         })
         .then(response => {
             context.commit('addExam', response.data)
         })
         .catch(error => {
-            console.log(error)
+            console.log(error.response)
         })
     },
 
@@ -69,7 +74,9 @@ const actions = {
     updateExam: (context, exam) => {
         axios.patch(url+exam.id+'/', {
             date: exam.date,
+            time: exam.time,
             grade: exam.grade,
+            typeOf: exam.typeOf
         })
         .then( response => {
             context.commit('updateExam', response.data)

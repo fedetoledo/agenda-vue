@@ -1,5 +1,5 @@
 import axios from 'axios'
-
+import firebase from 'firebase'
 //Todos Store
 
 const url = 'https://agenda-vue-django-api.herokuapp.com/api/todos/'
@@ -20,11 +20,11 @@ const getters = {
     todosFiltered: state => {
         if(state.filter == 'all') {
             return state.todos
-        } else if (state.filter == 'low') {
+        } else if (state.filter == 'baja') {
             return state.todos.filter(todo => todo.priority == 0)
-        } else if (state.filter == 'middle') {
+        } else if (state.filter == 'media') {
             return state.todos.filter(todo => todo.priority == 1)
-        } else if(state.filter == 'high') {
+        } else if(state.filter == 'alta') {
             return state.todos.filter(todo => todo.priority == 2)
         }
         return state.todos
@@ -38,7 +38,8 @@ const actions = {
         axios.get(url)
         .then(response => {
             let tempTodos = []
-            response.data.forEach(todo => {
+            let userTodos = response.data.filter(todo => todo.userUid == firebase.auth().currentUser.uid)
+            userTodos.forEach(todo => {
                 const data = {
                     id: todo.id,
                     title: todo.title,
@@ -46,7 +47,8 @@ const actions = {
                     completed: todo.completed,
                     created_at: todo.created_at,
                     priority: todo.priority,
-                    subject: todo.subject
+                    subject: todo.subject,
+                    userUid: todo.subject.userUid
                 }
                 tempTodos.push(data)
             })
@@ -73,20 +75,24 @@ const actions = {
             console.log(todo.subject.id)
             axios.post(url,{
                 title: todo.title,
+                description: todo.description,
                 priority: todo.priority,
                 completed: false,
                 // Axios expects an ID, not the entire object
                 subject: todo.subject.id,
+                userUid: todo.subject.userUid
             })
             .then(response => {
                 console.log(response.data)
                 context.commit('addTodo', {
                     id: response.data.id,
                     title: todo.title,
+                    description: todo.description,
                     priority: todo.priority,
                     completed: false,
                     //Here I can send the entire object and then use it in component
-                    subject: todo.subject
+                    subject: todo.subject,
+                    userUid: todo.subject.userUid
                 })
             })
             .catch(error => {

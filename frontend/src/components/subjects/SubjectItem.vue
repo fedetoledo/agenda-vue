@@ -1,78 +1,85 @@
 <template>
-  <v-card :color="color" class="subject-item">
-      <v-card-title class="subject-header">
-          <span class="name">
-              {{name}}
-          </span>
-            <v-spacer></v-spacer>
-           <v-menu bottom left>
-            <template v-slot:activator="{ on }">
-                <v-btn v-on="on" icon small>
-                    <v-icon color="white">mdi-dots-horizontal</v-icon>
-                </v-btn>
-            </template>
+    <div class="card subject-item" v-bind:style="{ background: color }">
+        <div class="card-header">
+            <span class="card-header-title name subject-header">
+                {{name}}
+                <b-dropdown aria-role="list">
+                    <b-icon class="acciones" slot="trigger" icon="dots-horizontal-circle"></b-icon>
+                    <b-dropdown-item @click="showEditModal=true" aria-role="listitem">Editar</b-dropdown-item>
+                    <b-dropdown-item @click="deleteSubject(subject.id)" aria-role="listitem">Eliminar</b-dropdown-item>
+                </b-dropdown>
+            </span>
+        </div>
+        <hr>
+        <div class="card-content card-text">
+            <div class="schedule">
+                <p class="schedule-title">Horario</p>
+                <p>{{schedule1}}</p>
+                <p>{{schedule2}}</p>
+            </div>
+        </div>
 
-            <v-list>
-              <v-list-item @click.stop="showEditModal=true">
-                  <v-list-item-title>Edit</v-list-item-title>
-              </v-list-item>
-              <v-list-item @click="deleteSubject(subject.id)">
-                  <v-list-item-title>Delete</v-list-item-title>
-              </v-list-item>
-            </v-list>
-          </v-menu>
-      </v-card-title>
-      <hr>
-      <v-card-text class="card-text">
-          <v-row>
-              <v-col class="schedule">
-                  <p class="schedule-title">Horario</p>
-                  <p>{{schedule1}}</p>
-                  <p>{{schedule2}}</p>
-              </v-col>
-          </v-row>
-      </v-card-text>
-      <!-- Edit modal -->
-       <v-row justify="center">
-            <v-dialog v-model="showEditModal" persistent max-width="600px">
-                <v-card>
-                    <v-card-title>
-                        <span class="headline">Edit subject</span>
-                    </v-card-title>
-                    <v-card-text class="card-text">
-                        <v-container class="edit-modal">
-                            <v-row>
-                            <v-col cols="6">
-                                <v-text-field v-model="name" label="name*" required></v-text-field>
-                            </v-col>
-                            <v-col cols="6">
-                                <v-select v-model="color" placeholder="Color" :items="getColors" item-text="text" item-value="value"></v-select>
-                            </v-col>
-                             <v-col cols="6">
-                                <v-text-field v-model="schedule1"  placeholder="Lun-20:00 a 22:00" label="Horario 1"></v-text-field>
-                            </v-col>
-                             <v-col cols="6">
-                                <v-text-field v-model="schedule2"  placeholder="Mar-20:00 a 22:00" label="Horario 2"></v-text-field>
-                            </v-col>
-                            </v-row>
-                        </v-container>
-                        <small>*indicates required field</small>
-                    </v-card-text>
-                    <v-card-actions>
-                        <v-spacer></v-spacer>
-                        <v-btn color="blue darken-1" text @click="showEditModal = false">Close</v-btn>
-                        <!-- VER update method -->
-                        <v-btn color="blue darken-1" text @click="showEditModal = false; updateSubject()">Save</v-btn>
-                    </v-card-actions>
-                </v-card>
-            </v-dialog>
-        </v-row>
-  </v-card>
+        <b-modal :active.sync="showEditModal"
+            has-modal-card
+            class="edit-modal"
+            trap-focus
+            :destroy-on-hide="false"
+            aria-role="dialog"
+            aria-modal>
+            <form action="">
+                <div class="modal-card">
+                    <header class="modal-card-head primary-color">
+                        <p class="modal-card-title">Editar {{name}}</p>
+                    </header>
+                    <section class="modal-card-body">
+                        <div class="columns is-centered">
+                            <div class="column is-10">
+                                <b-field label="Nombre">
+                                    <b-input type="text" v-model="name" placeholder="Nombre de la materia" required></b-input>
+                                </b-field>
+                            </div>
+                        </div>
+                        <div class="columns horarios">
+                            <div class="column is-4">
+                                <b-field label="Horario 1">
+                                    <b-input type="text" v-model="schedule1" placeholder="Horario"></b-input>
+                                </b-field>
+                            </div>
+                            <div class="column is-4">
+                                <b-field label="Horario 2">
+                                    <b-input type="text" v-model="schedule2" placeholder="Horario" ></b-input>
+                                </b-field>
+                            </div>
+                        </div>
+                        <div class="columns is-centered">
+                            <div class="column is-10">
+                                <b-field label="Elegi un color:">
+                                    <swatches
+                                            class="swatch"
+                                            :colors="getColors"
+                                            v-model="color"
+                                            inline
+                                        />
+                                </b-field>
+                            </div>
+                        </div>
+                        <div class="columns is-centered">
+                            <b-button @click="showEditModal=false; updateSubject()" class="add-btn">Guardar cambios</b-button>
+                        </div>
+                    </section>
+                </div>
+            </form>
+        </b-modal>
+    </div>
 </template>
 
 <script>
+import Swatches from 'vue-swatches'
 export default {
 
+    components: {
+        Swatches
+    },
     props: {
         subject: {
             type: Object,
@@ -87,7 +94,6 @@ export default {
             schedule1: this.subject.schedule1,
             schedule2: this.subject.schedule2,
             color: this.subject.color,
-            showMenu: false,
             showEditModal: false,
         }
     },
@@ -125,19 +131,35 @@ export default {
         margin: 0;
     }
 
+    .modal-background {
+        background-color: #fff !important;
+    }
+
     .edit-modal {
-        background-color: #fff;
+        text-align: left;
+        white-space: normal;
     }
 
     .subject-item {
-        min-height: 10em;
-        min-width: 13em;
-        margin-right: 10px;
+        border-radius: 4px 4px 2px 2px;
+        display: inline-block;
+        min-width: 12em;
+        min-height:8em;
+        margin: 0 5px;
     }
+
+    .modal-card-title {
+    color: #fff;
+}
 
     .subject-header {
         display: flex;
+        align-items: center;
         justify-content: space-between;
+    }
+
+    .subject-header .acciones:hover {
+        cursor: pointer;
     }
 
     .subject-menu {
@@ -146,7 +168,7 @@ export default {
     }
 
     .name {
-        font-size: 0.8em;
+        font-size: 0.9em;
         color: #fff;
     }
 
@@ -171,5 +193,17 @@ export default {
     }
 
     p {margin: 0 !important;}
-   
+
+    .swatch {
+        border: none;
+        outline: none;
+        overflow: hidden;
+        text-align:center;
+    }
+
+    .horarios {
+        display: flex;
+        justify-content: space-around;
+    }
+  
 </style>

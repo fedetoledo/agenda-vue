@@ -1,28 +1,26 @@
 <template>
-  <!-- <v-chip small dark label :color="priorityColorCode">{{verbosePriority}}</v-chip> -->
-  <v-icon :color="priorityColorCode">mdi-alert-circle</v-icon>
+  <b-icon icon="alert-circle" :type="priorityColorCode"></b-icon>
 </template>
 
 <script>
 export default {
 
-    props: {
-        priority: {
-            type: Number,
-            required: true
-        } 
-    },
+  props: {
+      priority: {
+          type: Number,
+          required: true
+      } 
+  },
 
-     computed: {
+  computed: {
     priorityColorCode() {
-      return this.priority == 0 ? '#61bd4f': this.priority == 1 ? '#f2d600': '#eb5a46'
+      return this.priority == 0 ? 'is-success': this.priority == 1 ? 'is-warning': 'is-danger'
     },
 
     verbosePriority() {
       return this.priority == 0 ? 'Low': this.priority == 1 ? 'Middle': 'High'
     }
   },
-
 }
 </script>
 

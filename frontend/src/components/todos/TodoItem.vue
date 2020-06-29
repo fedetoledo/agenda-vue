@@ -1,26 +1,26 @@
 <template>
-  <v-card @click="showDescription = !showDescription" class="todo">
+  <div class="card todo">
     <div class="todo-header">
-      <div class="overline d-flex justify-space-between">
+      <div class="todo-top">
         <SubjectTag :subject="todo.subject"/>
-        <v-btn @click="showAlert('editmissing')" class="edit-pencil" icon small>
-          <v-icon >mdi-pencil-outline</v-icon>
-        </v-btn>
+        <!-- <b-button rounded @click="showAlert('editmissing')" class="edit-pencil"> -->
+        <div class="actions">
+          <b-icon class="lapiz" @click.native="showAlert('Edit missing')" icon="pencil-outline"></b-icon>
+          <b-icon class="tacho" @click.native="deleteTodo(todo.id)" icon="delete"></b-icon>
+        </div>
+        <!-- </b-button> -->
       </div>
-      <v-card-title class="todo-title d-flex justify-space-between">
-        <!-- <div @click="showDescription = !showDescription" :class="{completed: completed}"> -->
+      <div @click="showDescription = !showDescription" class="todo-title">
               <span>{{title}}</span><PriorityTag :priority="todo.priority"/>
-        <!-- </div> -->
-      </v-card-title>
-    </div>
-    <v-expand-transition>
-      <div v-show="showDescription">
-        <v-card-text class="todo-item-desc">
-          {{description}} - <span @click="deleteTodo(todo.id)">X</span>
-        </v-card-text>
       </div>
-    </v-expand-transition>
-  </v-card>
+    </div>
+      <hr>
+      <b-collapse v-show="showDescription">
+        <div class="todo-item-desc">
+          <p>{{description}}</p>
+        </div>
+      </b-collapse>
+  </div>
 </template>
 
 <script>
@@ -86,8 +86,16 @@ export default {
 
 <style scoped>
 
+.tacho:hover {
+  color: #dd2c00;
+}
+
+.lapiz:hover {
+  color: #fdd835;
+}
+
 .todo {
-  margin: 5px 0;
+  margin: 10px 0;
 }
 
 .todo:hover {
@@ -98,11 +106,19 @@ export default {
   padding: 10px;
 }
 
+.todo-top {
+  margin-bottom: 0.4em;
+  display: flex;
+  justify-content: space-between;
+}
+
 .overline {
   text-align: left;
 }
 
 .todo-title {
+  display:flex;
+  justify-content: space-between;
   user-select: none;
   padding: 0;
   font-size: 1.15em;
@@ -112,16 +128,27 @@ export default {
   margin-right: 5px;
 }
 
+.todo-item-desc {
+  margin-bottom:20px;
+  margin:0 10px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.todo-item-desc p {
+  color: #676767;
+}
+
 .completed {
   text-decoration: line-through;
   color: #aaa;
 }
 
-.todo .edit-pencil {
+.todo .actions {
   visibility: hidden;
 }
 
-.todo:hover .edit-pencil {
+.todo:hover .actions {
   visibility: visible;
 }
 </style>
