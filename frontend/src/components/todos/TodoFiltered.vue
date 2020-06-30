@@ -1,10 +1,10 @@
 <template>
-    <v-row no-gutters justify="center" class="filters">
-        <v-col cols="10">
+    <div class="columns filters" no-gutters justify="center">
+        <div class="column is-10">
             <!-- @input will pass the selected item automatically to changeFilter -->
-            <v-overflow-btn @input="changeFilter" label="Filter by priority" :items="filters">Priority</v-overflow-btn>
-        </v-col>
-    </v-row>
+            <!-- <v-overflow-btn @input="changeFilter" label="Filtrar por prioridad" :items="filters">Prioridad</v-overflow-btn> -->
+        </div>
+    </div>
 </template>
 
 <script>
@@ -23,7 +23,7 @@ export default {
 
     data() {
         return {
-            filters: ['all','low','middle','high']
+            filters: ['todas','baja','media','alta']
         }
     }
 }

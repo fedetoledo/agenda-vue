@@ -1,5 +1,5 @@
 <template>
-  <v-chip dark small label :color="subject.color">{{subject.name}}</v-chip>
+  <b-tag v-bind:style="{color: subject.color}">{{subject.name}}</b-tag>
 </template>
 
 <script>

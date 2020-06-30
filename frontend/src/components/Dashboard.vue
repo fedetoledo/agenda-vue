@@ -1,25 +1,23 @@
 <template>
-   <v-app>
-    <v-container fluid class="container">
-      <v-row> <!-- main row -->
-        <v-col cols="4">
-          <TodoList/>
-        </v-col>
-        <v-col cols="8">
-          <v-row no-gutters>
-            <v-col>
-              <SubjectList/>
-            </v-col>
-          </v-row>
-          <v-row no-gutters>
-            <v-col cols="12" class="mr-2">
-              <ExamList/>
-            </v-col>
-          </v-row>
-        </v-col>
-      </v-row>
-    </v-container>
-  </v-app>
+    <section class="section">
+        <div class="columns"> <!-- main row -->
+          <div class="column is-4">
+            <TodoList/>
+          </div>
+          <div class="column is-8">
+            <div class="columns">
+              <div class="column is-12">
+                <SubjectList/>
+              </div>
+            </div>
+            <div class="columns">
+              <div class="column is-12">
+                <ExamList/>
+              </div>
+            </div>
+          </div>
+        </div>
+    </section>
 </template>
 <script>
 
@@ -36,13 +34,12 @@ export default {
 };
 </script>
 
-<style>
-.container {
-    background-color: #0079bf;
-    height: 100%;
-  }
+<style >
 
-  /* CSS LOADING */
+.section {
+  padding: 1rem;
+}
+
 .lds-facebook {
   display: block;
   position: relative;

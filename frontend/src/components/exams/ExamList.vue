@@ -2,100 +2,157 @@
 <div class="wrapper">
     <div class="section-styled">
         <div class="cards-header">
-            <h3 class="inline-h3">Examenes</h3>
-            <v-btn @click.stop="dialog=true" outlined class="add-btn">Agregar Examen</v-btn>
+            <h3 class="title">Examenes</h3>
+            <b-button @click.stop="showNewExamModal=true" outlined class="add-btn">Agregar Examen</b-button>
         </div>
         <template>
             <div v-if="$store.state.exams.loading" class="lds-facebook"><div></div><div></div><div></div></div>
-            <v-data-table
-                :headers="headers"
-                :items="getExams"
-                :items-per-page="5"
-                class="exams-table elevation-2">
-                <template v-slot:item.action="{ item }">
-                    <v-icon
-                        small
-                        class="mr-2"
-                        @click="getExamData(item)"
-                    >mdi-pencil
-                    </v-icon>
-                    <v-icon
-                        small
-                        @click="deleteExam(item.id)"
-                        >mdi-delete
-                    </v-icon>
+           
+            <b-table class="exams-table" :data="getExams">
+                <template slot-scope="props">
+                    <!-- <b-table-column field="subject" label="Materia" >
+                        {{props.row.subject.name}}
+                    </b-table-column> -->
+                    <b-table-column field="subject" label="Materia">
+                        {{props.row.subject.name}}
+                    </b-table-column>
+                    <template v-for="col in columns">
+                        <b-table-column :key="col.field.id" :field="col.field" :label="col.label">
+                            {{props.row[col.field]}}
+                        </b-table-column>
+                    </template>
+                    <b-table-column centered field="actions" custom-key="actions" label="Acciones">
+                        <b-button type="is-text" @click="getExamData(props.row)">
+                            <b-icon type="is-warning" icon="pencil" size="is-small"></b-icon>
+                        </b-button>
+                        <b-button type="is-text" @click="deleteExam(props.row.id)">
+                            <b-icon type="is-danger" icon="delete" size="is-small"></b-icon>
+                        </b-button>
+                    </b-table-column>
                 </template>
-            </v-data-table>
+            </b-table>
+           
         </template>
     </div>
 
-    <!-- New exam Modal -->
-    <v-row justify="center">
-        <v-dialog v-model="dialog" persistent max-width="600px">
-            <v-card>
-                <v-card-title>
-                    <span class="headline">Add Exam</span>
-                </v-card-title>
-                <v-card-text>
-                    <v-container>
-                        <v-row>
-                            <v-col cols="12">
-                                <v-select item-text="name" :items="getSubjects" return-object v-model="newExam.subject" label="Materia*" required></v-select>
-                            </v-col>
-                            <v-col cols="12">
-                                <v-text-field v-model="newExam.date"  placeholder="19/09/2020 20:00" label="Fecha" required />
-                            </v-col>
-                            <v-col cols="6">
-                                <v-select v-model="newExam.typeOf" label="Tipo de Examen" :items="typeOf" required></v-select>
-                            </v-col>
-                            <v-col cols="6">
-                                <v-text-field v-model="newExam.grade" label="Nota" required />
-                            </v-col>
-                        </v-row>
-                    </v-container>
-                    <small>*indicates required field</small>
-                </v-card-text>
-                <v-card-actions>
-                    <v-spacer></v-spacer>
-                    <v-btn color="blue darken-1" text @click="dialog = false">Close</v-btn>
-                    <v-btn color="blue darken-1" text @click="dialog = false; addExam()">Save</v-btn>
-                </v-card-actions>
-            </v-card>
-        </v-dialog>
-    </v-row>
-
-    <!-- Edit Exam Modal -->
-    <v-row justify="center" v-if="editedExam.subject">
-        <v-dialog v-model="showEditModal" persistent max-width="600px">
-            <v-card>
-                <v-card-title>
-                    <span class="headline">Editar Examen</span>
-                </v-card-title>
-                <v-card-text>
-                    <v-container>
-                        <v-row>
-                            <v-col cols="12">
-                                <v-text-field  disabled v-model="editedExam.subject.name" label="Materia*"></v-text-field>
-                            </v-col>
-                            <v-col cols="12">
-                                <v-text-field v-model="editedExam.date"  placeholder="dia/mes/año hora" label="Fecha"></v-text-field>
-                            </v-col>
-                            <v-col cols="12">
-                                <v-text-field v-model="editedExam.grade"  placeholder="Nota"></v-text-field>
-                            </v-col>
-                        </v-row>
-                    </v-container>
-                    <small>*indicates required field</small>
-                </v-card-text>
-                <v-card-actions>
-                    <v-spacer></v-spacer>
-                    <v-btn color="blue darken-1" text @click="showEditModal = false">Close</v-btn>
-                    <v-btn color="blue darken-1" text @click="showEditModal = false; updateExam(editedExam)">Save</v-btn>
-                </v-card-actions>
-            </v-card>
-        </v-dialog>
-    </v-row>
+    <!-- Nuevo Examen Modal -->
+    <b-modal :active.sync="showNewExamModal"
+        has-modal-card
+        trap-focus
+        :destroy-on-hide="false"
+        aria-role="dialog"
+        aria-modal>
+        <form action="">
+            <div class="modal-card" style="width:600px">
+                <header class="modal-card-head primary-color">
+                    <p class="modal-card-title">Agregar nuevo examen</p>
+                </header>
+                <section class="modal-card-body">
+                    <div class="columns is-centered">
+                        <div class="column is-9">
+                            <b-field label="Materia">
+                                <b-select v-model="newExam.subject" placeholder="Materia">
+                                    <option
+                                        v-for="subject in getSubjects"
+                                        v-bind:value="subject"
+                                        v-bind:key="subject.id"                       
+                                    >{{subject.name}}
+                                    </option>
+                                </b-select>
+                            </b-field>
+                        </div>
+                    </div>
+                    <div class="columns is-centered">
+                        <div class="column is-5">
+                            <b-field label="Dia">
+                                <b-input type="text" v-model="newExam.date" placeholder="Fecha" required></b-input>
+                            </b-field>
+                        </div>
+                        <div class="column is-4">
+                            <b-field label="Hora">
+                                <b-input type="text" v-model="newExam.time" placeholder="Hora" required></b-input>
+                            </b-field>
+                        </div>
+                    </div>
+                    <div class="columns is-centered">
+                        <div class="column is-6">
+                            <b-field label="Tipo de examen">
+                                <b-select v-model="newExam.typeOf" placeholder="Tipo de examen">
+                                    <option v-for="option in typeOfList" 
+                                        :key="option"
+                                        :value="option">
+                                        {{option}}
+                                    </option>
+                                </b-select>
+                            </b-field>
+                        </div>
+                        <div class="column is-3">
+                            <b-field label="Nota">
+                                <b-input type="number" v-model="newExam.grade" placeholder="Nota"></b-input>
+                            </b-field>
+                        </div>
+                    </div>
+                    <div class="columns is-centered">
+                        <b-button @click="showNewExamModal=false; addExam()" class="add-btn">Crear Examen</b-button>
+                    </div>
+                </section>
+            </div>
+        </form>
+    </b-modal>
     
+    <!-- Editar Examen Modal -->
+    <b-modal :active.sync="showEditModal"
+        v-if="editedExam.subject"
+        has-modal-card
+        trap-focus
+        :destroy-on-hide="false"
+        aria-role="dialog"
+        aria-modal>
+        <form action="">
+            <div class="modal-card" style="width:600px">
+                <header class="modal-card-head primary-color">
+                    <p class="modal-card-title">Editar examen de {{editedExam.subject.name}}</p>
+                </header>
+                <section class="modal-card-body">
+                    <div class="columns is-centered">
+                        <div class="column is-9">
+                            <b-field label="Materia">
+                                <b-input disabled v-model="editedExam.subject.name"></b-input>
+                            </b-field>
+                        </div>
+                    </div>
+                    <div class="columns is-centered">
+                        <div class="column is-9">
+                            <b-field label="Fecha">
+                                <b-input type="text" v-model="editedExam.date" placeholder="Fecha" required></b-input>
+                            </b-field>
+                        </div>
+                    </div>
+                    <div class="columns is-centered">
+                        <div class="column is-6">
+                            <b-field label="Tipo de examen">
+                                <b-select v-model="editedExam.typeOf" placeholder="Tipo de examen">
+                                    <option v-for="option in typeOfList" 
+                                        :key="option"
+                                        :value="option">
+                                        {{option}}
+                                    </option>
+                                </b-select>
+                            </b-field>
+                        </div>
+                        <div class="column is-3">
+                            <b-field label="Nota">
+                                <b-input type="number" v-model="editedExam.grade" placeholder="Nota"></b-input>
+                            </b-field>
+                        </div>
+                    </div>
+                    <div class="columns is-centered">
+                        <b-button @click="showEditModal=false; updateExam(editedExam)" class="add-btn">Crear Examen</b-button>
+                    </div>
+                </section>
+            </div>
+        </form>
+    </b-modal>
 </div>
 </template>
 
@@ -105,28 +162,30 @@ export default {
     data() {
         return {
             showEditModal: false,
-            dialog: false,
+            showNewExamModal: false,
             newExam: {
                 date: '',
-                subject: Object,
+                time: '',
+                subject: null,
                 grade: 0,
                 typeOf: ''
             },
-            headers: [
-                {text: 'Materia', value: 'subject.name'},
-                {text: 'Fecha', value: 'date'},
-                {text: 'Nota', value: 'grade'},
-                {text: 'Tipo', value: 'typeOf'},
-                {text: 'Actions', value: 'action', sortable: false},
+            columns: [
+                // {field: 'id', label: 'ID', width:40, numeric: true},
+                // {field: 'subject', label: 'Materia'}, //La saco porque no puedo usar objetos
+                {field: 'date', label: 'Fecha'},
+                {field: 'time', label: 'Hora'},
+                {field: 'grade', label: 'Nota'},
+                {field: 'typeOf', label: 'Tipo'},
             ],
             editedExam: {
                 date: '',
+                time: '',
                 subect: Object,
                 grade: 0,
                 typeOf: '',
             },
-
-            typeOf: ['Parcial', 'Final']
+            typeOfList: ['Parcial', 'Final']
         }
     },
 
@@ -149,7 +208,7 @@ export default {
             this.$store.dispatch('addExam', this.newExam)
         },
 
-          deleteExam(id) {
+        deleteExam(id) {
             this.$store.dispatch('deleteExam', id)
         },
 
@@ -158,7 +217,6 @@ export default {
         },
 
         getExamData(exam) {
-            console.log(exam)
             this.editedExam = exam
             this.showEditModal = true
         }
@@ -171,6 +229,14 @@ export default {
 
 .exams-table {
     margin: 10px 5px;
+}
+
+.modal-card-title {
+    color: #fff;
+}
+
+.custom-button {
+    color: #fff;
 }
 
 </style>

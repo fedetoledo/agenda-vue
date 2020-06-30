@@ -1,80 +1,83 @@
 <template>
-  <div class="wrapper">
-      <div class="section-styled upper-section">
-        <div class="cards-header">
-            <h3 class="inline-h3">Materias</h3>
-            <v-btn @click.stop="dialog=true" outlined class="add-btn">Agregar Materia</v-btn>
-
+    <div class="wrapper">
+        <div class="section-styled upper-section">
+            <div class="cards-header">
+                <h3 class="title">Materias</h3>
+                <b-button @click.stop="showNewSubjectModal=true" outlined class="add-btn">Agregar Materia</b-button>
+            </div>
+            <div class="subjects-list">
+                <div v-if="$store.state.exams.loading" class="lds-facebook"><div></div><div></div><div></div></div>
+                <SubjectItem
+                    v-for="subject in getSubjects"
+                    :key="subject.id"
+                    :subject="subject"
+                />
+            </div>
         </div>
-        <div class="subjects-list">
-            <div v-if="$store.state.exams.loading" class="lds-facebook"><div></div><div></div><div></div></div>
-            <SubjectItem
-                v-for="subject in getSubjects"
-                :key="subject.id"
-                :subject="subject"
-            />
-        </div>
-      </div>
-        <!-- New subject Modal -->
-        <v-row justify="center">
-            <v-dialog v-model="dialog" persistent max-width="600px">
-                <!-- <template v-slot:activator="{ on }"> -->
-                <!-- </template> -->
-                <v-card>
-                    <v-card-title>
-                        <span class="headline">Add Subject</span>
-                    </v-card-title>
-                    <v-card-text>
-                        <v-container>
-                            <v-row>
-                                <v-col cols="12">
-                                    <v-text-field :rules="rules" v-model="newSubject.name" label="Name*" required></v-text-field>
-                                </v-col>
-                                <!-- <v-col cols="6">
-                                    <v-select v-model="newSubject.color" item-text="text" item-value="value" placeholder="Color" :items="getColors"></v-select>
-                                </v-col> -->
-                                <v-col cols="6">
-                                    <v-text-field v-model="newSubject.schedule1"  placeholder="Lun-20:00 a 22:00" label="Horario 1" required></v-text-field>
-                                </v-col>
-                                <v-col cols="6">
-                                    <v-text-field v-model="newSubject.schedule2"  placeholder="Mar-20:00 a 22:00" label="Horario 2" required></v-text-field>
-                                </v-col>
-                                <v-col cols="12">
-                                    <div class="color-picker">
-                                        <strong>Elige un color: </strong>
-                                        <swatches
+      
+        <!-- Nueva Materia Modal -->
+        <b-modal :active.sync="showNewSubjectModal"
+            has-modal-card
+            trap-focus
+            :destroy-on-hide="false"
+            aria-role="dialog"
+            aria-modal>
+            <form action="">
+                <div class="modal-card" style="width:600px">
+                    <header class="modal-card-head primary-color">
+                        <p class="modal-card-title">Agregar nueva materia</p>
+                    </header>
+                    <section class="modal-card-body">
+                        <div class="columns is-centered">
+                            <div class="column is-10">
+                                <b-field label="Nombre">
+                                    <b-input type="text" v-model="newSubject.name" placeholder="Nombre de la materia" required></b-input>
+                                </b-field>
+                            </div>
+                        </div>
+                        <div class="columns horarios">
+                            <div class="column is-4">
+                                <b-field label="Horario 1">
+                                    <b-input type="text" v-model="newSubject.schedule1" placeholder="Horario"></b-input>
+                                </b-field>
+                            </div>
+                            <div class="column is-4">
+                                <b-field label="Horario 2">
+                                    <b-input type="text" v-model="newSubject.schedule2" placeholder="Horario" ></b-input>
+                                </b-field>
+                            </div>
+                        </div>
+                        <div class="columns is-centered">
+                            <div class="column is-10">
+                                <b-field label="Elegi un color:">
+                                    <swatches
                                             class="swatch"
                                             :colors="getColors"
                                             v-model="newSubject.color"
                                             inline
                                         />
-                                    </div>
-                                </v-col>
-                            </v-row>
-                        </v-container>
-                        <small>*indicates required field</small>
-                    </v-card-text>
-                    <v-card-actions>
-                        <v-spacer></v-spacer>
-                        <v-btn color="blue darken-1" text @click="dialog = false">Close</v-btn>
-                        <v-btn color="blue darken-1" text @click="dialog = false; addSubject()">Save</v-btn>
-                    </v-card-actions>
-                </v-card>
-            </v-dialog>
-            </v-row>
-  </div>
+                                </b-field>
+                            </div>
+                        </div>
+                        <div class="columns is-centered">
+                            <b-button @click="showNewSubjectModal=false; addSubject()" class="add-btn">Crear Examen</b-button>
+                        </div>
+                    </section>
+                </div>
+            </form>
+        </b-modal>
+    </div>
 </template>
 
 <script>
 import SubjectItem from './SubjectItem'
 import Swatches from 'vue-swatches'
-// import draggable from 'vuedraggable'
 
 export default {
 
     data() {
         return {
-            dialog: false,
+            showNewSubjectModal:false,
             newSubject: {
                 id: 0,
                 name: '',
@@ -147,11 +150,12 @@ export default {
 
 <style scoped>
 
+.modal-card-title {
+    color: #fff;
+}
+
 .subjects-list {
-    min-height: 13em;
-    display: flex;
-    flex-wrap: no-wrap;
-    align-items: flex-end;
+    white-space: nowrap;
     overflow-x: scroll;
     margin: 0 10px;
     padding-bottom: 10px;
@@ -165,8 +169,13 @@ export default {
 .swatch {
     border: none;
     outline: none;
-    /* max-height: 70px; */
+    text-align: center;
     overflow: hidden;
+}
+
+.horarios {
+    display: flex;
+    justify-content: space-around;
 }
 
 </style>
