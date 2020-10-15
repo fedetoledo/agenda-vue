@@ -1,7 +1,7 @@
 <template>
   <b-navbar class="menu">
     <template slot="brand">
-      <b-navbar-item class="titulo" tag="router-link" :to="{ path: '/dashboard' }">Agenda Vue</b-navbar-item>
+      <b-navbar-item class="titulo" tag="router-link" :to="{ path: '/dashboard' }">College Agenda</b-navbar-item>
     </template>
     <template slot="end">
       <b-navbar-item tag="div">
@@ -9,12 +9,8 @@
           <span class="greeting">Hola, {{user.data.displayName}} </span> <b-button @click="signOut">Cerrar Sesion</b-button>
         </template>
         <div class="buttons" v-else>
-          <a class="button is-dark">
-            <strong>Registrarse</strong>
-          </a>
-          <a class="button is-light">
-            Log in
-          </a>
+          <router-link class='button is-dark' to='/login'>Sign in</router-link>
+          <router-link class='button is-light' to='/register'>Sign up</router-link>
         </div>
       </b-navbar-item>
     </template>
@@ -22,7 +18,7 @@
 </template>
 
 <script>
-import firebase from "firebase";
+import firebase from "firebase/app";
 export default {
   computed: {
     user() {

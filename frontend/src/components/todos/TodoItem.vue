@@ -3,15 +3,23 @@
     <div class="todo-header">
       <div class="todo-top">
         <SubjectTag :subject="todo.subject"/>
-        <!-- <b-button rounded @click="showAlert('editmissing')" class="edit-pencil"> -->
         <div class="actions">
-          <b-icon class="lapiz" @click.native="showAlert('Edit missing')" icon="pencil-outline"></b-icon>
-          <b-icon class="tacho" @click.native="deleteTodo(todo.id)" icon="delete"></b-icon>
+          <b-icon class="pencil-icon" @click.native="editMode = !editMode" icon="pencil-outline"></b-icon>
+          <b-icon class="bin-icon" @click.native="deleteTodo(todo.id)" icon="delete"></b-icon>
         </div>
-        <!-- </b-button> -->
       </div>
       <div @click="showDescription = !showDescription" class="todo-title">
-              <span>{{title}}</span><PriorityTag :priority="todo.priority"/>
+        <div v-if="editMode" class='edit-mode' v-on:keyup.enter='doneEdit'>
+          <!-- <b-input class='input-title-edit' type='text' v-model="title"></b-input> -->
+          <input type="text" class='input-title-edit' v-model='title'>
+          <b-button class='save-button' @click="doneEdit()">Guardar</b-button>
+        </div>
+        <div v-else>
+          <!-- <b-input readonly custom-class='input-title' v-model="title"></b-input> -->
+          <input type="text" readonly class='input-title' v-model="title">
+            <!-- <span>{{title}}</span> -->
+        </div>
+          <PriorityTag :priority="todo.priority"/>
       </div>
     </div>
       <hr>
@@ -46,37 +54,39 @@ export default {
 
   data() {
     return {
+      editMode: false,
       data: false,
       showDescription: false,
-      'id': this.todo.id,
-      'title': this.todo.title,
-      'description': this.todo.description,
-      'completed': this.todo.completed,
-      'priority': this.todo.priority,
-      'subject': this.todo.subject
+      id: this.todo.id,
+      title: this.todo.title,
+      description: this.todo.description,
+      completed: this.todo.completed,
+      priority: this.todo.priority,
+      subject: this.todo.subject
     }
   },
 
   methods: {
-
-    showAlert(msg) {
-      alert(msg)
+    testing() {
+      alert('this works')
     },
-    
     deleteTodo(id) {
       this.$store.dispatch('deleteTodo', id)
     },
     doneEdit() {
       if(this.title.trim() == '') {
+        alert('El titulo no puede estar vacio')
         this.title = 'No puede estar vacio'
+        return
       }
-      // this.editing = false
+      this.editMode = false
       this.$store.dispatch('updateTodo', {
         'id': this.id,
         'title': this.title,
         'description': this.description,
         'completed': this.completed,
-        // 'subject': this.subject
+        // 'subject': this.subject,
+        // 'priority': this.priority
       })
     },
   },
@@ -86,11 +96,11 @@ export default {
 
 <style scoped>
 
-.tacho:hover {
+.bin-icon:hover {
   color: #dd2c00;
 }
 
-.lapiz:hover {
+.pencil-icon:hover {
   color: #fdd835;
 }
 
@@ -119,9 +129,34 @@ export default {
 .todo-title {
   display:flex;
   justify-content: space-between;
+  align-items: center;
   user-select: none;
   padding: 0;
   font-size: 1.15em;
+}
+
+.input-title {
+    border: none;
+    padding-top: 2px;
+    font-size: 1em;
+}
+
+.input-title-edit {
+  font-size: 1em;
+}
+
+.edit-mode {
+  display: flex;
+  justify-content: space-between;
+}
+
+.edit-mode .save-button {
+  margin-left: 10px;
+  box-shadow: 10;
+  color: white;
+  background: #02cc3f;
+  border: none;
+  font-weight: 700;
 }
 
 .title {
@@ -130,8 +165,9 @@ export default {
 
 .todo-item-desc {
   margin-bottom:20px;
-  margin:0 10px;
+  margin: 10px;
   display: flex;
+  align-items: center;
   justify-content: space-between;
 }
 

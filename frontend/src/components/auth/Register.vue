@@ -62,7 +62,7 @@
 
               <div class="field">
                 <div class="control">
-                  <button type="submit" class="button is-link">Register</button>
+                  <button type="submit" class="button is-primary">Register</button>
                 </div>
               </div>
             </form>
@@ -75,7 +75,7 @@
 
 
 <script>
-import firebase from "firebase";
+import firebase from "firebase/app";
 
 export default {
   data() {

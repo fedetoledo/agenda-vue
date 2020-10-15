@@ -106,8 +106,9 @@ const actions = {
             description: todo.description,
             completed: todo.completed,
         })
-        .then(() => {
-            context.commit('updateTodo', todo)
+        .then((response) => {
+            console.log(response.data)
+            context.commit('updateTodo', response.data)
         })
         .catch(error => {
             console.log(error)
@@ -148,12 +149,7 @@ const mutations = {
 
     updateTodo: (state, todo) => {
         const index = state.todos.findIndex(item => item.id == todo.id)
-        state.todos.splice(index, 1, {
-            'id': todo.id,
-            'title': todo.title,
-            'description': todo.description,
-            'completed': todo.completed
-        })
+        state.todos.splice(index, 1, todo)
     },
 
     clearCompleted: state => {
